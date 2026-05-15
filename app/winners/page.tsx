@@ -64,7 +64,7 @@ function WinnerCard({ winner, index }: { winner: typeof allWinners[0]; index: nu
       viewport={{ once: true }}
       transition={{ delay: index * 0.1 }}
     >
-      <Link href={`/contestant/${winner.id}`} className="block group">
+      <div className="block group cursor-default">
         <div className="relative bg-card rounded-2xl border border-border overflow-hidden transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5">
           {/* Work Image */}
           <div className="relative aspect-[3/2] overflow-hidden">
@@ -79,7 +79,7 @@ function WinnerCard({ winner, index }: { winner: typeof allWinners[0]; index: nu
             {/* Position Badge */}
             <div className="absolute top-4 left-4">
               <div className={cn(
-                "w-12 h-12 rounded-full flex items-center justify-center",
+                "w-12 h-12 rounded-full flex items-center justify-center shadow-lg",
                 winner.position === 1 ? "bg-yellow-500 text-yellow-950" :
                 winner.position === 2 ? "bg-gray-300 text-gray-800" :
                 "bg-amber-700 text-white"
@@ -96,7 +96,7 @@ function WinnerCard({ winner, index }: { winner: typeof allWinners[0]; index: nu
 
             {/* Edition Badge */}
             <div className="absolute top-4 right-4">
-              <div className="px-3 py-1.5 rounded-full glass flex items-center gap-2 text-sm">
+              <div className="px-3 py-1.5 rounded-full glass border border-white/10 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider">
                 <Calendar className="w-3 h-3" />
                 Edition {winner.edition}
               </div>
@@ -106,7 +106,7 @@ function WinnerCard({ winner, index }: { winner: typeof allWinners[0]; index: nu
             <div className="absolute bottom-4 left-4 right-4">
               <div className="flex items-center gap-2">
                 <Icon className="w-4 h-4 text-white/70" />
-                <span className="text-sm text-white/70 capitalize">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-white/70">
                   {winner.category.replace("graphics", "Graphics Design").replace("fashion", "Fashion Design")}
                 </span>
               </div>
@@ -116,7 +116,7 @@ function WinnerCard({ winner, index }: { winner: typeof allWinners[0]; index: nu
           {/* Winner Info */}
           <div className="p-5">
             <div className="flex items-center gap-4 mb-4">
-              <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-secondary">
+              <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-secondary/50 shadow-inner">
                 <Image
                   src={winner.image}
                   alt={winner.name}
@@ -128,7 +128,7 @@ function WinnerCard({ winner, index }: { winner: typeof allWinners[0]; index: nu
                 <h3 className="font-bold text-lg group-hover:text-primary transition-colors">
                   {winner.name}
                 </h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
                   {winner.position === 1 ? "1st Place Winner" :
                    winner.position === 2 ? "2nd Place Winner" :
                    "3rd Place Winner"}
@@ -136,18 +136,18 @@ function WinnerCard({ winner, index }: { winner: typeof allWinners[0]; index: nu
               </div>
             </div>
 
-            <div className="flex items-center justify-between pt-4 border-t border-border">
+            <div className="flex items-center justify-between pt-4 border-t border-white/5">
               <div className="flex items-center gap-2">
                 <Heart className="w-4 h-4 fill-red-500 text-red-500" />
-                <span className="text-sm text-muted-foreground">
-                  {winner.votes.toLocaleString()} votes
+                <span className="text-sm font-medium text-muted-foreground">
+                  {winner.votes.toLocaleString()} <span className="text-[10px] uppercase opacity-60">votes</span>
                 </span>
               </div>
-              <span className="font-bold text-lg gradient-text">{winner.prize}</span>
+              <span className="font-black text-xl gradient-text">{winner.prize}</span>
             </div>
           </div>
         </div>
-      </Link>
+      </div>
     </motion.div>
   )
 }

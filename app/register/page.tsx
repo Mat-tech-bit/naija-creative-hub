@@ -2,17 +2,22 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { auth, db } from "@/lib/firebase"
+import { createUserWithEmailAndPassword, deleteUser } from "firebase/auth"
+import { doc, setDoc } from "firebase/firestore"
 import { motion, AnimatePresence } from "framer-motion"
-import { 
-  Trophy, 
-  ArrowLeft, 
-  ArrowRight, 
-  Upload, 
-  User, 
-  Mail, 
-  Lock, 
-  Camera, 
-  Palette, 
+import { toast } from "sonner"
+import {
+  Trophy,
+  ArrowLeft,
+  ArrowRight,
+  Upload,
+  User,
+  Mail,
+  Lock,
+  Camera,
+  Palette,
   Brush,
   CheckCircle,
   Image as ImageIcon,
@@ -39,6 +44,7 @@ const steps = [
 ]
 
 export default function RegisterPage() {
+  const router = useRouter()
   const [currentStep, setCurrentStep] = useState(1)
   const [formData, setFormData] = useState({
     fullName: "",
@@ -48,12 +54,17 @@ export default function RegisterPage() {
     category: "",
     interest: "",
     workImage: null as File | null,
+    profileImage: null as File | null,
     workTheme: "",
     experience: "",
     inspiration: "",
   })
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  const [profilePreviewUrl, setProfilePreviewUrl] = useState<string | null>(null)
   const [isDragging, setIsDragging] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [errorMsg, setErrorMsg] = useState("")
+  const [agreedToTerms, setAgreedToTerms] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -67,6 +78,14 @@ export default function RegisterPage() {
     }
   }
 
+  const handleProfileFileChange = (file: File | null) => {
+    if (file) {
+      setFormData(prev => ({ ...prev, profileImage: file }))
+      const url = URL.createObjectURL(file)
+      setProfilePreviewUrl(url)
+    }
+  }
+
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault()
     setIsDragging(false)
@@ -77,6 +96,45 @@ export default function RegisterPage() {
   }
 
   const nextStep = () => {
+    // Validation for each step
+    if (currentStep === 1) {
+      if (!formData.fullName || !formData.email || !formData.password || !formData.confirmPassword) {
+        setErrorMsg("Please fill all personal information fields")
+        return
+      }
+      if (!formData.profileImage) {
+        setErrorMsg("Please upload a profile picture")
+        return
+      }
+      if (formData.password !== formData.confirmPassword) {
+        setErrorMsg("Passwords do not match")
+        return
+      }
+      if (formData.password.length < 6) {
+        setErrorMsg("Password must be at least 6 characters")
+        return
+      }
+    } else if (currentStep === 2) {
+      if (!formData.category) {
+        setErrorMsg("Please select a competition category")
+        return
+      }
+      if (!formData.interest) {
+        setErrorMsg("Please tell us about your interest")
+        return
+      }
+    } else if (currentStep === 3) {
+      if (!formData.workImage) {
+        setErrorMsg("Please upload a sample of your work")
+        return
+      }
+      if (!formData.workTheme || !formData.experience || !formData.inspiration) {
+        setErrorMsg("Please fill in all details about your work")
+        return
+      }
+    }
+    
+    setErrorMsg("")
     if (currentStep < 4) setCurrentStep(currentStep + 1)
   }
 
@@ -84,12 +142,106 @@ export default function RegisterPage() {
     if (currentStep > 1) setCurrentStep(currentStep - 1)
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Upload image to Cloudinary (free, no billing required)
+  const uploadToCloudinary = async (file: File): Promise<string> => {
+    const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
+    const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
+    if (!cloudName || !uploadPreset) {
+      throw new Error("Cloudinary is not configured. Please set NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME and NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET in .env.local")
+    }
+    const form = new FormData()
+    form.append("file", file)
+    form.append("upload_preset", uploadPreset)
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+      method: "POST",
+      body: form,
+    })
+    if (!res.ok) throw new Error("Image upload failed")
+    const data = await res.json() as { secure_url: string }
+    return data.secure_url
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission
-    console.log("Form submitted:", formData)
-    // Redirect to profile page after successful registration
-    window.location.href = "/contestant/new"
+    if (currentStep < 4) {
+      nextStep()
+      return
+    }
+    if (!agreedToTerms) {
+      setErrorMsg("Please check the box to agree with the terms and conditions"); return;
+    }
+    if (formData.password !== formData.confirmPassword) {
+      setErrorMsg("Passwords do not match"); return;
+    }
+    setIsLoading(true); setErrorMsg("")
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+      const user = userCredential.user;
+
+      try {
+        // Upload work image to Cloudinary
+        let workImageUrl = ""
+        if (formData.workImage) {
+          try {
+            workImageUrl = await uploadToCloudinary(formData.workImage)
+          } catch (uploadError) {
+            console.warn("Work image upload failed:", uploadError)
+          }
+        }
+
+        // Upload profile picture to Cloudinary
+        let profileImageUrl = ""
+        if (formData.profileImage) {
+          try {
+            profileImageUrl = await uploadToCloudinary(formData.profileImage)
+          } catch (uploadError) {
+            console.warn("Profile image upload failed:", uploadError)
+          }
+        }
+
+        await setDoc(doc(db, "users", user.uid), {
+          id: user.uid,
+          name: formData.fullName,
+          email: formData.email,
+          category: categories.find(c => c.id === formData.category)?.name || "Not selected",
+          categoryId: formData.category,
+          interest: formData.interest,
+          workTheme: formData.workTheme,
+          experience: formData.experience,
+          inspiration: formData.inspiration,
+          work: workImageUrl,
+          image: profileImageUrl,
+          votes: 0,
+          rank: 0,
+          totalContestants: 0,
+          edition: 5,
+          story: formData.interest,
+          joinedDate: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+          referralLink: `${window.location.origin}/contestant/${user.uid}`,
+          topSupporters: [],
+          recentVoters: []
+        })
+
+        toast.success("Registration successful! Please log in.")
+        router.push('/login')
+      } catch (innerErr) {
+        // If Firestore write fails, remove the created auth account to avoid orphaned accounts
+        await deleteUser(user).catch(() => null)
+        throw innerErr
+      }
+    } catch (err) {
+      console.error(err)
+      const error = err as { code?: string; message?: string }
+      if (error.code === "auth/email-already-in-use") {
+        setErrorMsg("An account with this email already exists. Please log in instead.")
+      } else if (error.code === "auth/weak-password") {
+        setErrorMsg("Password must be at least 6 characters.")
+      } else {
+        setErrorMsg(error.message || "An error occurred during registration. Please try again.")
+      }
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -99,7 +251,7 @@ export default function RegisterPage() {
         <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-accent/20" />
         <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-primary/10 blur-[120px]" />
         <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full bg-accent/10 blur-[100px]" />
-        
+
         <div className="relative z-10 flex flex-col justify-center p-12 xl:p-16">
           <Link href="/" className="flex items-center gap-2 mb-12">
             <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center">
@@ -109,12 +261,12 @@ export default function RegisterPage() {
               Creative<span className="gradient-text">Vote</span>
             </span>
           </Link>
-          
+
           <h1 className="text-4xl xl:text-5xl font-bold mb-6 text-balance">
             Join the Next Generation of{" "}
             <span className="gradient-text">Creative Icons</span>
           </h1>
-          
+
           <p className="text-lg text-muted-foreground mb-8">
             Register to compete, showcase your talent, and win amazing prizes. Your creative journey starts here.
           </p>
@@ -156,20 +308,20 @@ export default function RegisterPage() {
           <div className="w-full max-w-lg">
             {/* Progress Steps */}
             <div className="mb-8">
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-4 px-2 sm:px-0">
                 {steps.map((step, index) => (
-                  <div key={step.id} className="flex items-center">
+                  <div key={step.id} className="flex items-center flex-1 last:flex-none">
                     <div className={cn(
-                      "w-10 h-10 rounded-full flex items-center justify-center transition-colors",
-                      currentStep >= step.id 
-                        ? "gradient-primary text-white" 
+                      "w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center transition-all duration-300",
+                      currentStep >= step.id
+                        ? "gradient-primary text-white shadow-lg shadow-primary/20 scale-110"
                         : "bg-muted text-muted-foreground"
                     )}>
-                      <step.icon className="w-5 h-5" />
+                      <step.icon className="w-4 h-4 sm:w-5 sm:h-5" />
                     </div>
                     {index < steps.length - 1 && (
                       <div className={cn(
-                        "w-8 sm:w-16 h-0.5 mx-2",
+                        "flex-1 h-0.5 mx-1 sm:mx-2 rounded-full transition-colors duration-500",
                         currentStep > step.id ? "bg-primary" : "bg-muted"
                       )} />
                     )}
@@ -198,6 +350,35 @@ export default function RegisterPage() {
                     </div>
 
                     <div className="space-y-4">
+                      {/* Profile Picture Upload */}
+                      <div>
+                        <Label>Profile Picture</Label>
+                        <div className="mt-2 flex items-start gap-4">
+                          <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-dashed border-border flex items-center justify-center bg-muted shrink-0">
+                            {profilePreviewUrl ? (
+                              <img src={profilePreviewUrl} alt="Profile Preview" className="w-full h-full object-cover" />
+                            ) : (
+                              <User className="w-8 h-8 text-muted-foreground" />
+                            )}
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => handleProfileFileChange(e.target.files?.[0] || null)}
+                              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                            />
+                          </div>
+                          <div className="flex-1 pt-1">
+                            <p className="text-sm font-medium">Upload your profile photo</p>
+                            <p className="text-xs text-muted-foreground mt-1">Click the circle to choose a photo. PNG or JPG.</p>
+                            {profilePreviewUrl && (
+                              <button type="button" onClick={() => { setProfilePreviewUrl(null); setFormData(prev => ({ ...prev, profileImage: null })) }} className="text-xs text-red-400 hover:text-red-300 mt-1">
+                                Remove photo
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
                       <div>
                         <Label htmlFor="fullName">Full Name</Label>
                         <div className="relative mt-2">
@@ -492,10 +673,17 @@ export default function RegisterPage() {
 
                       {/* Terms */}
                       <div className="flex items-start gap-3 p-4 bg-muted/50 rounded-xl">
-                        <input type="checkbox" id="terms" required className="mt-1" />
-                        <label htmlFor="terms" className="text-sm text-muted-foreground">
+                        <input 
+                          type="checkbox" 
+                          id="terms" 
+                          checked={agreedToTerms}
+                          onChange={(e) => setAgreedToTerms(e.target.checked)}
+                          required 
+                          className="mt-1 h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary cursor-pointer" 
+                        />
+                        <label htmlFor="terms" className="text-sm text-muted-foreground cursor-pointer">
                           I agree to the{" "}
-                          <Link href="/terms" className="text-primary hover:underline">
+                          <Link href="/terms" className="text-primary hover:underline" target="_blank">
                             Terms & Conditions
                           </Link>{" "}
                           and understand that votes are non-refundable.
@@ -531,13 +719,15 @@ export default function RegisterPage() {
                 ) : (
                   <Button
                     type="submit"
+                    disabled={isLoading}
                     className="flex-1 h-12 gradient-primary border-0 text-white"
                   >
-                    Submit Registration
-                    <CheckCircle className="w-4 h-4 ml-2" />
+                    {isLoading ? "Submitting..." : "Submit Registration"}
+                    {!isLoading && <CheckCircle className="w-4 h-4 ml-2" />}
                   </Button>
                 )}
               </div>
+              {errorMsg && <p className="text-red-500 text-sm mt-4 text-center">{errorMsg}</p>}
             </form>
 
             {/* Login Link */}

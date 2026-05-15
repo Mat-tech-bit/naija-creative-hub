@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { 
   X, 
@@ -14,10 +14,14 @@ import {
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
+import { auth } from "@/lib/firebase"
+import { toast } from "sonner"
+
 interface VoteModalProps {
   isOpen: boolean
   onClose: () => void
   contestant: {
+    id: string
     name: string
     image: string
     category: string
@@ -27,7 +31,8 @@ interface VoteModalProps {
 const VOTE_PRICE = 50 // ₦50 per vote
 
 export function VoteModal({ isOpen, onClose, contestant }: VoteModalProps) {
-  const [voteCount, setVoteCount] = useState(1)
+  const [voteCount, setVoteCount] = useState(10)
+  const [email, setEmail] = useState("")
   const [isProcessing, setIsProcessing] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
 
@@ -36,21 +41,53 @@ export function VoteModal({ isOpen, onClose, contestant }: VoteModalProps) {
   const incrementVotes = () => setVoteCount(prev => prev + 1)
   const decrementVotes = () => setVoteCount(prev => prev > 1 ? prev - 1 : 1)
 
+  useEffect(() => {
+    if (auth.currentUser?.email) {
+      setEmail(auth.currentUser.email)
+    }
+  }, [auth.currentUser])
+
   const handlePayment = async () => {
+    const userEmail = email;
+    
+    if (!userEmail) {
+      toast.error("Please enter your email to continue")
+      return
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) {
+      toast.error("Please enter a valid email address")
+      return
+    }
+
     setIsProcessing(true)
     
-    // Simulate payment processing
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    setIsProcessing(false)
-    setIsSuccess(true)
-    
-    // Reset after showing success
-    setTimeout(() => {
-      setIsSuccess(false)
-      setVoteCount(1)
-      onClose()
-    }, 3000)
+    try {
+      const response = await fetch("/api/paystack/initialize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: totalAmount,
+          email: userEmail,
+          contestantId: contestant.id,
+          contestantName: contestant.name,
+          voteCount: voteCount
+        }),
+      })
+
+      const data = await response.json()
+
+      if (data.status && data.data.authorization_url) {
+        window.location.href = data.data.authorization_url
+      } else {
+        toast.error(data.message || "Something went wrong. Please try again.")
+        setIsProcessing(false)
+      }
+    } catch (error) {
+      console.error("Payment Error:", error)
+      toast.error("Network error. Please check your connection.")
+      setIsProcessing(false)
+    }
   }
 
   if (!isOpen) return null
@@ -133,11 +170,30 @@ export function VoteModal({ isOpen, onClose, contestant }: VoteModalProps) {
 
               {/* Content */}
               <div className="p-6">
+                {/* Email Input */}
+                <div className="mb-4">
+                  <label className="text-sm text-muted-foreground mb-2 block">
+                    Your Email Address
+                  </label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    className="w-full h-12 px-4 rounded-xl bg-muted border border-border focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                    required
+                  />
+                  <p className="text-[10px] text-muted-foreground mt-1">
+                    Receipt and confirmation will be sent to this email.
+                  </p>
+                </div>
+
                 {/* Vote Counter */}
                 <div className="mb-6">
                   <label className="text-sm text-muted-foreground mb-2 block">
                     Number of Votes
                   </label>
+
                   <div className="flex items-center justify-between gap-4 p-4 bg-muted rounded-xl">
                     <button
                       onClick={decrementVotes}

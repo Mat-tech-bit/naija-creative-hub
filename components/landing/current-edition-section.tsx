@@ -5,6 +5,8 @@ import { motion } from "framer-motion"
 import { Clock, Calendar, Trophy, Users } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { db } from "@/lib/firebase"
+import { collection, getDocs } from "firebase/firestore"
 
 interface TimeLeft {
   days: number
@@ -14,7 +16,7 @@ interface TimeLeft {
 }
 
 // Set contest end date (30 days from now for demo)
-const CONTEST_END_DATE = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+const CONTEST_END_DATE = new Date("2024-12-31T23:59:59")
 
 function calculateTimeLeft(): TimeLeft {
   const difference = CONTEST_END_DATE.getTime() - new Date().getTime()
@@ -52,12 +54,34 @@ function CountdownUnit({ value, label }: { value: number; label: string }) {
 export function CurrentEditionSection() {
   const [timeLeft, setTimeLeft] = useState<TimeLeft>(calculateTimeLeft())
   const [mounted, setMounted] = useState(false)
+  const [stats, setStats] = useState({ contestants: "...", votes: "...", daysLeft: "..." })
 
   useEffect(() => {
     setMounted(true)
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft())
     }, 1000)
+
+    const fetchStats = async () => {
+      try {
+        const usersRef = collection(db, "users")
+        const snapshot = await getDocs(usersRef)
+        const contestants = snapshot.docs.map(doc => doc.data())
+        const totalVotes = contestants.reduce((acc: number, curr: any) => acc + (curr.votes || 0), 0)
+        
+        const diff = CONTEST_END_DATE.getTime() - new Date().getTime()
+        const daysLeft = Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)))
+
+        setStats({
+          contestants: contestants.length.toString(),
+          votes: totalVotes.toLocaleString(),
+          daysLeft: daysLeft.toString()
+        })
+      } catch (error) {
+        console.error("Error fetching edition stats:", error)
+      }
+    }
+    fetchStats()
 
     return () => clearInterval(timer)
   }, [])
@@ -131,10 +155,10 @@ export function CurrentEditionSection() {
             className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12"
           >
             {[
-              { icon: Users, value: "156", label: "Contestants" },
-              { icon: Trophy, value: "₦500K", label: "Grand Prize" },
-              { icon: Calendar, value: "30", label: "Days Left" },
-              { icon: Clock, value: "8,432", label: "Total Votes" },
+              { icon: Users, value: stats.contestants, label: "Participants" },
+              { icon: Trophy, value: "₦1M+", label: "Prize Pool" },
+              { icon: Calendar, value: stats.daysLeft, label: "Days Left" },
+              { icon: Clock, value: stats.votes, label: "Total Votes" },
             ].map((stat, index) => (
               <div
                 key={index}
@@ -157,8 +181,8 @@ export function CurrentEditionSection() {
             transition={{ delay: 0.4 }}
             className="text-center"
           >
-            <Link href="/editions/5">
-              <Button size="lg" className="gradient-primary border-0 text-white hover:opacity-90">
+            <Link href="/editions">
+              <Button size="lg" className="gradient-primary border-0 text-white hover:opacity-90 px-8 h-14 rounded-xl font-bold shadow-lg shadow-primary/20">
                 View Current Edition
               </Button>
             </Link>

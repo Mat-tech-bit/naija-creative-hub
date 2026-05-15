@@ -2,6 +2,10 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { auth, db } from "@/lib/firebase"
+import { signInWithEmailAndPassword, deleteUser } from "firebase/auth"
+import { doc, getDoc } from "firebase/firestore"
 import { motion } from "framer-motion"
 import { Trophy, Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -9,12 +13,14 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
 export default function LoginPage() {
+  const router = useRouter()
   const [showPassword, setShowPassword] = useState(false)
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   })
   const [isLoading, setIsLoading] = useState(false)
+  const [errorMsg, setErrorMsg] = useState("")
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -22,16 +28,27 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setIsLoading(true)
+    setIsLoading(true); setErrorMsg("")
     
-    // Simulate login
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    
-    console.log("Login attempt:", formData)
-    // Redirect after successful login
-    window.location.href = "/contestant/1"
-    
-    setIsLoading(false)
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, formData.email, formData.password);
+      const user = userCredential.user;
+      
+      if (user.email === "matthewakinyemi24@gmail.com") {
+        router.push("/admin");
+      } else {
+        router.push(`/contestant/${user.uid}`);
+      }
+    } catch (err: any) {
+      console.error(err);
+      if (err.code === "auth/invalid-credential" || err.code === "auth/user-not-found" || err.code === "auth/wrong-password") {
+        setErrorMsg("Invalid email or password");
+      } else {
+        setErrorMsg(err.message || "Failed to log in");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -169,6 +186,7 @@ export default function LoginPage() {
                 )}
               </Button>
             </form>
+            {errorMsg && <p className="text-red-500 text-sm mt-4 text-center">{errorMsg}</p>}
 
             {/* Divider */}
             <div className="relative my-8">

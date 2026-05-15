@@ -1,22 +1,11 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter, Plus_Jakarta_Sans, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { Toaster } from 'sonner'
 import './globals.css'
 
-const inter = Inter({ 
-  subsets: ["latin"],
-  variable: '--font-inter',
-})
-
-const plusJakarta = Plus_Jakarta_Sans({ 
-  subsets: ["latin"],
-  variable: '--font-plus-jakarta',
-})
-
-const geistMono = Geist_Mono({ 
-  subsets: ["latin"],
-  variable: '--font-geist-mono',
-})
+// Using system fonts to avoid network timeouts during build
+// You can re-enable Google Fonts once you are on a stable internet connection
+const fontVariables = "--font-inter: 'Inter', system-ui, sans-serif; --font-plus-jakarta: 'Plus Jakarta Sans', system-ui, sans-serif; --font-geist-mono: 'Geist Mono', monospace;";
 
 export const metadata: Metadata = {
   title: 'CreativeVote | Discover & Support Creative Talent',
@@ -51,7 +40,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark bg-background" data-scroll-behavior="smooth">
-      <body className={`${inter.variable} ${plusJakarta.variable} ${geistMono.variable} font-sans antialiased`}>
+      <body 
+        className="font-sans antialiased" 
+        style={{ 
+          // @ts-ignore
+          "--font-inter": "var(--font-inter, 'Inter', system-ui, sans-serif)",
+          "--font-plus-jakarta": "var(--font-plus-jakarta, 'Plus Jakarta Sans', system-ui, sans-serif)",
+          "--font-geist-mono": "var(--font-geist-mono, 'Geist Mono', monospace)"
+        }}
+      >
+        <Toaster position="top-center" richColors theme="dark" />
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>

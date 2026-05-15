@@ -228,6 +228,28 @@
   .text-balance {
     text-wrap: balance;
   }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 5px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+  }
+
+  .premium-shadow {
+    box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1), 0 5px 20px -5px rgba(0,0,0,0.05);
+  }
+
+  .glass-border {
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
 }
 
 @keyframes float {

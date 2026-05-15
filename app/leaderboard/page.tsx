@@ -1,22 +1,21 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, Suspense } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { collection, getDocs, orderBy, query } from "firebase/firestore"
+import { db } from "@/lib/firebase"
 import { motion } from "framer-motion"
 import { 
   Trophy, 
   Heart, 
   Search, 
-  Filter,
   Camera,
   Palette,
   Brush,
   TrendingUp,
   Users,
-  ArrowUp,
-  ArrowDown,
-  Minus
+  User
 } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
@@ -24,21 +23,18 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 
-// Demo contestants data
-const allContestants = [
-  { id: "1", name: "Sarah Adeyemi", category: "photography", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop", work: "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=400&h=300&fit=crop", votes: 1234, rank: 1, change: "up" },
-  { id: "2", name: "Michael Okonkwo", category: "graphics", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop", work: "https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?w=400&h=300&fit=crop", votes: 1156, rank: 2, change: "up" },
-  { id: "3", name: "Chioma Eze", category: "fashion", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop", work: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop", votes: 1089, rank: 3, change: "same" },
-  { id: "4", name: "David Nnamdi", category: "photography", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop", work: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=400&h=300&fit=crop", votes: 987, rank: 4, change: "down" },
-  { id: "5", name: "Fatima Hassan", category: "graphics", image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop", work: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&h=300&fit=crop", votes: 876, rank: 5, change: "up" },
-  { id: "6", name: "Emmanuel Obi", category: "fashion", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop", work: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&h=300&fit=crop", votes: 765, rank: 6, change: "same" },
-  { id: "7", name: "Grace Amadi", category: "photography", image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop", work: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop", votes: 723, rank: 7, change: "up" },
-  { id: "8", name: "Oluwaseun Bello", category: "graphics", image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&h=200&fit=crop", work: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&h=300&fit=crop", votes: 698, rank: 8, change: "down" },
-  { id: "9", name: "Adaeze Nwankwo", category: "fashion", image: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=200&h=200&fit=crop", work: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=400&h=300&fit=crop", votes: 654, rank: 9, change: "same" },
-  { id: "10", name: "Tochukwu Ike", category: "photography", image: "https://images.unsplash.com/photo-1463453091185-61582044d556?w=200&h=200&fit=crop", work: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=400&h=300&fit=crop", votes: 612, rank: 10, change: "up" },
-  { id: "11", name: "Blessing Okoro", category: "graphics", image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop", work: "https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=400&h=300&fit=crop", votes: 589, rank: 11, change: "down" },
-  { id: "12", name: "Ikenna Chukwu", category: "fashion", image: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=200&h=200&fit=crop", work: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400&h=300&fit=crop", votes: 534, rank: 12, change: "same" },
-]
+import { useSearchParams, useRouter } from "next/navigation"
+
+interface ContestantItem {
+  id: string
+  name: string
+  category: string
+  categoryId: string
+  image: string
+  work: string
+  votes: number
+  rank: number
+}
 
 const categories = [
   { id: "all", name: "All Categories", icon: Users },
@@ -47,9 +43,15 @@ const categories = [
   { id: "graphics", name: "Graphics Design", icon: Brush },
 ]
 
-function Top3Spotlight({ contestants }: { contestants: typeof allContestants }) {
+const categoryIcons: Record<string, React.ElementType> = {
+  photography: Camera,
+  fashion: Palette,
+  graphics: Brush,
+}
+
+function Top3Spotlight({ contestants }: { contestants: ContestantItem[] }) {
   const top3 = contestants.slice(0, 3)
-  const positions = [1, 0, 2] // Order: 2nd, 1st, 3rd for visual display
+  const positions = top3.length === 1 ? [0] : top3.length === 2 ? [1, 0] : [1, 0, 2]
   
   return (
     <div className="flex items-end justify-center gap-4 sm:gap-8 mb-12">
@@ -58,8 +60,8 @@ function Top3Spotlight({ contestants }: { contestants: typeof allContestants }) 
         if (!contestant) return null
         
         const isFirst = pos === 0
-        const heights = ["h-32", "h-44", "h-28"]
-        const scales = ["scale-100", "scale-110", "scale-100"]
+        const heights = top3.length === 1 ? ["h-44"] : top3.length === 2 ? ["h-32", "h-44"] : ["h-32", "h-44", "h-28"]
+        const scales = top3.length === 1 ? ["scale-110"] : top3.length === 2 ? ["scale-100", "scale-110"] : ["scale-100", "scale-110", "scale-100"]
         
         return (
           <motion.div
@@ -70,7 +72,6 @@ function Top3Spotlight({ contestants }: { contestants: typeof allContestants }) 
             className={cn("relative", scales[displayIndex])}
           >
             <Link href={`/contestant/${contestant.id}`} className="block group">
-              {/* Podium */}
               <div className={cn(
                 "relative w-24 sm:w-32 rounded-t-2xl flex flex-col items-center justify-start pt-4",
                 heights[displayIndex],
@@ -78,7 +79,6 @@ function Top3Spotlight({ contestants }: { contestants: typeof allContestants }) 
                 pos === 1 ? "bg-gradient-to-b from-gray-400/30 to-gray-400/10" :
                 "bg-gradient-to-b from-amber-700/30 to-amber-700/10"
               )}>
-                {/* Trophy */}
                 <div className={cn(
                   "w-12 h-12 rounded-full flex items-center justify-center mb-2",
                   pos === 0 ? "bg-yellow-500 text-yellow-950" :
@@ -87,29 +87,26 @@ function Top3Spotlight({ contestants }: { contestants: typeof allContestants }) 
                 )}>
                   <Trophy className="w-6 h-6" />
                 </div>
-                
-                {/* Position */}
                 <div className="text-2xl font-bold">#{pos + 1}</div>
-                
-                {/* Votes */}
                 <div className="flex items-center gap-1 mt-2 text-sm">
                   <Heart className="w-3 h-3 fill-red-500 text-red-500" />
                   {contestant.votes.toLocaleString()}
                 </div>
               </div>
               
-              {/* Profile Image - Positioned above podium */}
+              {/* Profile Image */}
               <div className="absolute -top-16 left-1/2 -translate-x-1/2">
                 <div className={cn(
-                  "relative rounded-full overflow-hidden border-4 transition-transform group-hover:scale-105",
+                  "relative rounded-full overflow-hidden border-4 transition-transform group-hover:scale-105 bg-muted",
                   isFirst ? "w-24 h-24 sm:w-28 sm:h-28 border-yellow-500" : "w-20 h-20 sm:w-24 sm:h-24 border-muted"
                 )}>
-                  <Image
-                    src={contestant.image}
-                    alt={contestant.name}
-                    fill
-                    className="object-cover"
-                  />
+                  {contestant.image ? (
+                    <img src={contestant.image} alt={contestant.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <User className="w-8 h-8 text-muted-foreground" />
+                    </div>
+                  )}
                 </div>
                 {isFirst && (
                   <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-yellow-500 flex items-center justify-center">
@@ -119,7 +116,6 @@ function Top3Spotlight({ contestants }: { contestants: typeof allContestants }) 
               </div>
             </Link>
             
-            {/* Name */}
             <p className="text-center font-medium mt-2 text-sm sm:text-base truncate w-24 sm:w-32">
               {contestant.name.split(" ")[0]}
             </p>
@@ -130,13 +126,8 @@ function Top3Spotlight({ contestants }: { contestants: typeof allContestants }) 
   )
 }
 
-function ContestantRow({ contestant, index }: { contestant: typeof allContestants[0]; index: number }) {
-  const categoryIcons = {
-    photography: Camera,
-    fashion: Palette,
-    graphics: Brush,
-  }
-  const Icon = categoryIcons[contestant.category as keyof typeof categoryIcons]
+function ContestantRow({ contestant, index }: { contestant: ContestantItem; index: number }) {
+  const Icon = categoryIcons[contestant.categoryId] || Camera
   
   return (
     <motion.div
@@ -158,22 +149,16 @@ function ContestantRow({ contestant, index }: { contestant: typeof allContestant
             {contestant.rank}
           </div>
           
-          {/* Change Indicator */}
-          <div className="w-6 shrink-0">
-            {contestant.change === "up" && <ArrowUp className="w-4 h-4 text-green-500" />}
-            {contestant.change === "down" && <ArrowDown className="w-4 h-4 text-red-500" />}
-            {contestant.change === "same" && <Minus className="w-4 h-4 text-muted-foreground" />}
-          </div>
-          
           {/* Avatar & Name */}
           <div className="flex items-center gap-3 flex-1 min-w-0">
-            <div className="relative w-12 h-12 rounded-full overflow-hidden shrink-0">
-              <Image
-                src={contestant.image}
-                alt={contestant.name}
-                fill
-                className="object-cover"
-              />
+            <div className="relative w-12 h-12 rounded-full overflow-hidden shrink-0 bg-muted">
+              {contestant.image ? (
+                <img src={contestant.image} alt={contestant.name} className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <User className="w-6 h-6 text-muted-foreground" />
+                </div>
+              )}
             </div>
             <div className="min-w-0">
               <p className="font-medium truncate group-hover:text-primary transition-colors">
@@ -181,20 +166,17 @@ function ContestantRow({ contestant, index }: { contestant: typeof allContestant
               </p>
               <div className="flex items-center gap-1 text-sm text-muted-foreground">
                 <Icon className="w-3 h-3" />
-                <span className="capitalize">{contestant.category.replace("graphics", "Graphics Design").replace("fashion", "Fashion Design").replace("photography", "Photography")}</span>
+                <span>{contestant.category}</span>
               </div>
             </div>
           </div>
           
-          {/* Work Preview (hidden on mobile) */}
-          <div className="hidden md:block relative w-20 h-14 rounded-lg overflow-hidden shrink-0">
-            <Image
-              src={contestant.work}
-              alt={`${contestant.name}'s work`}
-              fill
-              className="object-cover"
-            />
-          </div>
+          {/* Work Preview */}
+          {contestant.work && (
+            <div className="hidden md:block relative w-20 h-14 rounded-lg overflow-hidden shrink-0 bg-muted">
+              <img src={contestant.work} alt={`${contestant.name}'s work`} className="w-full h-full object-cover" />
+            </div>
+          )}
           
           {/* Votes */}
           <div className="text-right shrink-0">
@@ -207,15 +189,64 @@ function ContestantRow({ contestant, index }: { contestant: typeof allContestant
   )
 }
 
-export default function LeaderboardPage() {
-  const [selectedCategory, setSelectedCategory] = useState("all")
+function LeaderboardContent() {
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const categoryParam = searchParams?.get("category") || "all"
+  
+  const [selectedCategory, setSelectedCategory] = useState(categoryParam)
   const [searchQuery, setSearchQuery] = useState("")
+  const [allContestants, setAllContestants] = useState<ContestantItem[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    setSelectedCategory(categoryParam)
+  }, [categoryParam])
+
+  useEffect(() => {
+    const fetchContestants = async () => {
+      setLoading(true)
+      try {
+        const q = query(collection(db, "users"), orderBy("votes", "desc"))
+        const snapshot = await getDocs(q)
+        const data: ContestantItem[] = snapshot.docs.map((docSnap, index) => {
+          const d = docSnap.data()
+          return {
+            id: docSnap.id,
+            name: d.name ?? "Unknown",
+            category: d.category ?? "",
+            categoryId: d.categoryId ?? "",
+            image: d.image ?? "",
+            work: d.work ?? "",
+            votes: d.votes ?? 0,
+            rank: index + 1,
+          }
+        })
+        setAllContestants(data)
+      } catch (error) {
+        console.error("Error fetching leaderboard:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchContestants()
+  }, [])
 
   const filteredContestants = allContestants.filter(contestant => {
-    const matchesCategory = selectedCategory === "all" || contestant.category === selectedCategory
+    // Basic filter for real data
+    const isReal = contestant.name && contestant.name !== "Unknown" && 
+                   contestant.category && contestant.id.length > 5;
+    
+    if (!isReal) return false;
+
+    const matchesCategory = selectedCategory === "all" || contestant.categoryId === selectedCategory
     const matchesSearch = contestant.name.toLowerCase().includes(searchQuery.toLowerCase())
     return matchesCategory && matchesSearch
-  })
+  }).map((c, i) => ({ ...c, rank: i + 1 })) // Re-calculate rank based on filtered category
+
+  const handleCategoryChange = (catId: string) => {
+    router.push(`/leaderboard?category=${catId}`)
+  }
 
   return (
     <>
@@ -240,66 +271,82 @@ export default function LeaderboardPage() {
             </p>
           </motion.div>
 
-          {/* Top 3 Spotlight */}
-          <div className="pt-20 mb-8">
-            <Top3Spotlight contestants={filteredContestants} />
-          </div>
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-24 gap-4">
+              <div className="w-12 h-12 rounded-full border-4 border-primary border-t-transparent animate-spin" />
+              <p className="text-muted-foreground">Loading contestants...</p>
+            </div>
+          ) : allContestants.length === 0 ? (
+            <div className="text-center py-24">
+              <Trophy className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+              <h2 className="text-xl font-bold mb-2">No contestants yet</h2>
+              <p className="text-muted-foreground mb-6">Be the first to register and compete!</p>
+              <Link href="/register">
+                <Button className="gradient-primary border-0 text-white">Register Now</Button>
+              </Link>
+            </div>
+          ) : (
+            <>
+              {/* Top 3 Spotlight */}
+              {filteredContestants.length >= 1 && (
+                <div className="pt-20 mb-8">
+                  <Top3Spotlight contestants={filteredContestants} />
+                </div>
+              )}
 
-          {/* Filters */}
-          <div className="flex flex-col sm:flex-row gap-4 mb-8">
-            {/* Search */}
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-              <Input
-                placeholder="Search contestants..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 h-12"
-              />
-            </div>
-            
-            {/* Category Filter */}
-            <div className="flex gap-2 overflow-x-auto pb-2 sm:pb-0">
-              {categories.map((category) => (
-                <Button
-                  key={category.id}
-                  variant={selectedCategory === category.id ? "default" : "outline"}
-                  onClick={() => setSelectedCategory(category.id)}
-                  className={cn(
-                    "shrink-0",
-                    selectedCategory === category.id && "gradient-primary border-0 text-white"
-                  )}
-                >
-                  <category.icon className="w-4 h-4 mr-2" />
-                  {category.name}
-                </Button>
-              ))}
-            </div>
-          </div>
-
-          {/* Leaderboard List */}
-          <div className="glass rounded-2xl p-4 sm:p-6">
-            <div className="flex items-center justify-between mb-4 px-4">
-              <span className="text-sm text-muted-foreground">
-                {filteredContestants.length} contestants
-              </span>
-              <span className="text-sm text-muted-foreground">
-                Edition 5
-              </span>
-            </div>
-            
-            <div className="divide-y divide-border">
-              {filteredContestants.slice(3).map((contestant, index) => (
-                <ContestantRow key={contestant.id} contestant={contestant} index={index} />
-              ))}
-            </div>
-
-            {filteredContestants.length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-muted-foreground">No contestants found</p>
+              {/* Filters */}
+              <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <Input
+                    placeholder="Search contestants..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-10 h-12"
+                  />
+                </div>
+                
+                <div className="flex gap-2 overflow-x-auto pb-2 sm:pb-0">
+                  {categories.map((category) => (
+                    <Button
+                      key={category.id}
+                      variant={selectedCategory === category.id ? "default" : "outline"}
+                      onClick={() => handleCategoryChange(category.id)}
+                      className={cn(
+                        "shrink-0",
+                        selectedCategory === category.id && "gradient-primary border-0 text-white"
+                      )}
+                    >
+                      <category.icon className="w-4 h-4 mr-2" />
+                      {category.name}
+                    </Button>
+                  ))}
+                </div>
               </div>
-            )}
-          </div>
+
+              {/* Leaderboard List */}
+              <div className="glass rounded-2xl p-4 sm:p-6">
+                <div className="flex items-center justify-between mb-4 px-4">
+                  <span className="text-sm text-muted-foreground">
+                    {filteredContestants.length} contestant{filteredContestants.length !== 1 ? "s" : ""}
+                  </span>
+                  <span className="text-sm text-muted-foreground">Edition 5</span>
+                </div>
+                
+                <div className="divide-y divide-border">
+                  {filteredContestants.slice(3).map((contestant, index) => (
+                    <ContestantRow key={contestant.id} contestant={contestant} index={index} />
+                  ))}
+                </div>
+
+                {filteredContestants.length === 0 && (
+                  <div className="text-center py-12">
+                    <p className="text-muted-foreground">No contestants found matching your search.</p>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
         </div>
       </main>
 
@@ -307,3 +354,16 @@ export default function LeaderboardPage() {
     </>
   )
 }
+
+export default function LeaderboardPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-12 h-12 rounded-full border-4 border-primary border-t-transparent animate-spin" />
+      </div>
+    }>
+      <LeaderboardContent />
+    </Suspense>
+  )
+}
+

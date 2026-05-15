@@ -2,12 +2,15 @@
 
 import { motion } from "framer-motion"
 import Link from "next/link"
-import Image from "next/image"
+import { useState, useEffect } from "react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { db } from "@/lib/firebase"
+import { collection, getDocs } from "firebase/firestore"
 import {
   Trophy,
   Users,
@@ -23,13 +26,6 @@ import {
   Rocket,
   Shield,
 } from "lucide-react"
-
-const stats = [
-  { icon: Users, value: "10,000+", label: "Contestants" },
-  { icon: Star, value: "5M+", label: "Total Votes" },
-  { icon: Trophy, value: "₦15M+", label: "Prizes Awarded" },
-  { icon: Globe, value: "36", label: "States Represented" },
-]
 
 const values = [
   {
@@ -63,25 +59,29 @@ const team = [
     name: "Adaora Nwosu",
     role: "Founder & CEO",
     bio: "Former creative director with a passion for discovering emerging talent.",
-    image: "/team/adaora.jpg",
+    initials: "AN",
+    color: "bg-blue-500/20 text-blue-500"
   },
   {
     name: "Emeka Okafor",
     role: "Head of Operations",
     bio: "Event management expert with 10+ years in the creative industry.",
-    image: "/team/emeka.jpg",
+    initials: "EO",
+    color: "bg-purple-500/20 text-purple-500"
   },
   {
     name: "Fatima Ibrahim",
     role: "Creative Director",
     bio: "Award-winning designer and advocate for youth creative education.",
-    image: "/team/fatima.jpg",
+    initials: "FI",
+    color: "bg-pink-500/20 text-pink-500"
   },
   {
     name: "Tunde Adeleke",
     role: "Technology Lead",
     bio: "Tech entrepreneur focused on building platforms that empower creators.",
-    image: "/team/tunde.jpg",
+    initials: "TA",
+    color: "bg-orange-500/20 text-orange-500"
   },
 ]
 
@@ -109,6 +109,34 @@ const milestones = [
 ]
 
 export default function AboutPage() {
+  const [stats, setStats] = useState([
+    { icon: Users, value: "...", label: "Contestants" },
+    { icon: Star, value: "...", label: "Total Votes" },
+    { icon: Trophy, value: "₦2M+", label: "Prizes Awarded" },
+    { icon: Globe, value: "36", label: "States Represented" },
+  ])
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const usersRef = collection(db, "users")
+        const snapshot = await getDocs(usersRef)
+        const contestants = snapshot.docs.map(doc => doc.data())
+        const totalVotes = contestants.reduce((acc: number, curr: any) => acc + (curr.votes || 0), 0)
+        
+        setStats([
+          { icon: Users, value: contestants.length.toLocaleString(), label: "Contestants" },
+          { icon: Star, value: totalVotes.toLocaleString(), label: "Total Votes" },
+          { icon: Trophy, value: "₦2M+", label: "Prizes Awarded" },
+          { icon: Globe, value: "36", label: "States Represented" },
+        ])
+      } catch (error) {
+        console.error("Error fetching about stats:", error)
+      }
+    }
+    fetchStats()
+  }, [])
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -359,16 +387,17 @@ export default function AboutPage() {
                 transition={{ duration: 0.4, delay: index * 0.1 }}
                 viewport={{ once: true }}
               >
-                <Card className="overflow-hidden bg-card/50 backdrop-blur-sm">
-                  <div className="aspect-square bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-                    <div className="w-24 h-24 bg-background/50 rounded-full flex items-center justify-center">
-                      <Users className="h-12 w-12 text-primary/50" />
-                    </div>
+                <Card className="overflow-hidden bg-card/50 backdrop-blur-sm border-white/5 hover:border-primary/30 transition-all group">
+                  <div className="aspect-square bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center relative overflow-hidden">
+                    <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <Avatar className="h-24 w-24 rounded-2xl shadow-2xl relative z-10">
+                        <AvatarFallback className={member.color + " rounded-2xl font-bold text-2xl"}>{member.initials}</AvatarFallback>
+                    </Avatar>
                   </div>
                   <CardContent className="p-6 text-center">
-                    <h3 className="font-semibold text-lg">{member.name}</h3>
-                    <p className="text-primary text-sm mb-2">{member.role}</p>
-                    <p className="text-muted-foreground text-sm">{member.bio}</p>
+                    <h3 className="font-bold text-lg">{member.name}</h3>
+                    <p className="text-primary text-xs font-bold uppercase tracking-wider mb-3">{member.role}</p>
+                    <p className="text-muted-foreground text-sm leading-relaxed">{member.bio}</p>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -380,26 +409,26 @@ export default function AboutPage() {
       {/* CTA Section */}
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <Card className="bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 border-primary/30 overflow-hidden">
-            <CardContent className="p-12 text-center relative">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent" />
-              <div className="relative z-10">
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">Join Our Community</h2>
-                <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                  Whether you&apos;re a contestant, supporter, or potential partner, there&apos;s a place
-                  for you in the Creative Edge family.
-                </p>
-                <div className="flex flex-wrap justify-center gap-4">
-                  <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
-                    <Link href="/register">
-                      Become a Contestant
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                  <Button asChild variant="outline" size="lg">
-                    <Link href="/contact">Partner With Us</Link>
-                  </Button>
-                </div>
+          <Card className="bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 border-primary/20 overflow-hidden relative">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 blur-[100px] -z-0" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/10 blur-[100px] -z-0" />
+            
+            <CardContent className="p-12 text-center relative z-10">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Join Our Community</h2>
+              <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+                Whether you&apos;re a contestant, supporter, or potential partner, there&apos;s a place
+                for you in the Creative Edge family.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Button asChild size="lg" className="gradient-primary border-0 text-white shadow-lg shadow-primary/25">
+                  <Link href="/register">
+                    Become a Contestant
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" size="lg" className="glass h-14 px-8 border-white/10 hover:bg-white/5">
+                  <Link href="/contact">Partner With Us</Link>
+                </Button>
               </div>
             </CardContent>
           </Card>

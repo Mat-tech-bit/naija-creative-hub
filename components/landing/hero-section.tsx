@@ -1,11 +1,37 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { ArrowRight, Play, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { db } from "@/lib/firebase"
+import { collection, getDocs } from "firebase/firestore"
 
 export function HeroSection() {
+  const [stats, setStats] = useState({ votes: "...", contestants: "...", editions: "5", prize: "₦2M+" })
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const usersRef = collection(db, "users")
+        const snapshot = await getDocs(usersRef)
+        const contestants = snapshot.docs.map(doc => doc.data())
+        const totalVotes = contestants.reduce((acc: number, curr: any) => acc + (curr.votes || 0), 0)
+        
+        setStats({
+          votes: totalVotes > 1000 ? `${(totalVotes / 1000).toFixed(1)}K+` : totalVotes.toLocaleString(),
+          contestants: contestants.length.toLocaleString(),
+          editions: "5",
+          prize: "₦2M+"
+        })
+      } catch (error) {
+        console.error("Error fetching hero stats:", error)
+      }
+    }
+    fetchStats()
+  }, [])
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
       {/* Background Effects */}
@@ -95,10 +121,10 @@ export function HeroSection() {
             className="flex flex-wrap items-center justify-center gap-8 sm:gap-12 mt-16"
           >
             {[
-              { value: "10K+", label: "Votes Cast" },
-              { value: "500+", label: "Contestants" },
-              { value: "5", label: "Editions" },
-              { value: "₦2M+", label: "Prize Pool" },
+              { value: stats.votes, label: "Votes Cast" },
+              { value: stats.contestants, label: "Contestants" },
+              { value: stats.editions, label: "Editions" },
+              { value: stats.prize, label: "Prize Pool" },
             ].map((stat, index) => (
               <div key={index} className="text-center">
                 <div className="text-2xl sm:text-3xl font-bold gradient-text">{stat.value}</div>
