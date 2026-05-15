@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { useParams, useSearchParams, useRouter } from "next/navigation"
 import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore"
 import { auth, db } from "@/lib/firebase"
@@ -103,7 +103,7 @@ function AnimatedVoteCounter({ votes }: { votes: number }) {
   )
 }
 
-export default function ContestantProfilePage() {
+function ContestantProfileContent() {
   const params = useParams()
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -683,3 +683,17 @@ export default function ContestantProfilePage() {
     </>
   )
 }
+
+export default function ContestantProfilePage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4">
+        <div className="w-12 h-12 rounded-full border-4 border-primary border-t-transparent animate-spin" />
+        <p className="text-muted-foreground">Initializing profile...</p>
+      </div>
+    }>
+      <ContestantProfileContent />
+    </Suspense>
+  )
+}
+
