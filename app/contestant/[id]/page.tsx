@@ -232,42 +232,60 @@ function ContestantProfileContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4">
-        <div className="w-12 h-12 rounded-full border-4 border-primary border-t-transparent animate-spin" />
-        <p className="text-muted-foreground">Loading profile...</p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background gap-4 px-4 text-center">
+        <div className="relative">
+          <div className="w-16 h-16 border-4 border-primary/20 rounded-full" />
+          <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin absolute top-0 left-0" />
+        </div>
+        <div className="space-y-2">
+            <h2 className="text-xl font-bold tracking-tight">Syncing Profile...</h2>
+            <p className="text-sm text-muted-foreground">Connecting to the Creative Hub</p>
+        </div>
       </div>
     )
   }
 
   if (!contestant) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4">
-        <Trophy className="w-16 h-16 text-muted-foreground" />
-        <h2 className="text-xl font-bold">Contestant not found</h2>
-        <p className="text-muted-foreground">This profile does not exist or has been removed.</p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background gap-6 px-4 text-center">
+        <div className="w-20 h-20 rounded-3xl bg-muted flex items-center justify-center">
+          <User className="w-10 h-10 text-muted-foreground/30" />
+        </div>
+        <div className="space-y-2">
+            <h2 className="text-2xl font-black tracking-tight">Contestant Not Found</h2>
+            <p className="text-muted-foreground max-w-xs">The creative you're looking for might have moved or the link is incorrect.</p>
+        </div>
         <Link href="/leaderboard">
-          <Button variant="outline">Back to Leaderboard</Button>
+          <Button className="gradient-primary border-0 text-white rounded-2xl h-12 px-8 font-bold shadow-xl shadow-primary/20">
+            Back to Leaderboard
+          </Button>
         </Link>
       </div>
     )
   }
 
   const CategoryIcon = categoryIcons[contestant.categoryId] || Camera
+  
+  // Generate real referral link
+  const liveReferralLink = typeof window !== 'undefined' 
+    ? `${window.location.origin}/contestant/${contestant.id}` 
+    : contestant.referralLink;
 
   const copyReferralLink = () => {
-    navigator.clipboard.writeText(contestant.referralLink)
+    navigator.clipboard.writeText(liveReferralLink)
     setCopied(true)
+    toast.success("Referral link copied to clipboard!")
     setTimeout(() => setCopied(false), 2000)
   }
 
   const shareOnSocial = (platform: string) => {
-    const text = `Vote for ${contestant.name} in the CreativeVote ${contestant.category} competition!`
-    const url = contestant.referralLink
-    
+    const text = `Check out ${contestant.name}'s amazing work on the Creative Hub and cast your vote! Support local talent.`
+    const url = encodeURIComponent(liveReferralLink)
+    const encodedText = encodeURIComponent(text)
     const urls: Record<string, string> = {
-      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
-      twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
-      whatsapp: `https://wa.me/?text=${encodeURIComponent(text + " " + url)}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+      twitter: `https://twitter.com/intent/tweet?text=${encodedText}&url=${url}`,
+      whatsapp: `https://wa.me/?text=${encodedText}%20${url}`,
     }
     
     window.open(urls[platform], "_blank", "width=600,height=400")
@@ -339,13 +357,13 @@ function ContestantProfileContent() {
         {/* Hero Section */}
         <section className="container mx-auto px-4 pb-12">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
-            {/* Work Image */}
+            {/* Work Image Container */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="relative"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="relative w-full max-w-2xl mx-auto lg:max-w-none"
             >
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-muted">
+              <div className="relative aspect-[4/5] sm:aspect-[4/3] rounded-3xl overflow-hidden bg-muted shadow-2xl ring-1 ring-white/10 group">
                 {contestant.work ? (
                   <Image
                     src={contestant.work}
@@ -416,10 +434,12 @@ function ContestantProfileContent() {
                   </div>
                 )}
               </div>
-              <div className="text-center sm:text-left">
-                <h1 className="text-3xl sm:text-4xl font-black tracking-tight mb-1">{contestant.name}</h1>
-                <p className="text-muted-foreground flex items-center justify-center sm:justify-start gap-2 text-sm font-medium">
-                  <Calendar className="w-4 h-4 text-primary" />
+              <div className="text-center sm:text-left min-w-0 flex-1">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-2 break-words leading-tight">
+                  {contestant.name}
+                </h1>
+                <p className="text-muted-foreground flex items-center justify-center sm:justify-start gap-2 text-xs sm:text-sm font-bold uppercase tracking-wider opacity-70">
+                  <Calendar className="w-3.5 h-3.5 text-primary" />
                   Joined {contestant.joinedDate}
                 </p>
               </div>
@@ -464,19 +484,25 @@ function ContestantProfileContent() {
                 </div>
 
                 {/* Referral Link */}
-                <div className="flex gap-2 mb-4">
-                  <div className="flex-1 p-3 bg-muted rounded-lg text-sm truncate">
-                    {contestant.referralLink}
+                <div className="flex flex-col sm:flex-row gap-3 mb-6">
+                  <div className="flex-1 p-4 bg-muted/50 rounded-2xl text-[11px] font-mono break-all line-clamp-1 border border-white/5 flex items-center">
+                    {liveReferralLink}
                   </div>
                   <Button
                     variant="outline"
                     onClick={copyReferralLink}
-                    className="shrink-0"
+                    className="shrink-0 h-12 rounded-2xl transition-all active:scale-95 border-white/10 hover:bg-white/5"
                   >
                     {copied ? (
-                      <Check className="w-4 h-4 text-green-500" />
+                      <div className="flex items-center gap-2 text-green-500 font-bold">
+                        <Check className="w-4 h-4" />
+                        <span className="sm:hidden">Copied</span>
+                      </div>
                     ) : (
-                      <Copy className="w-4 h-4" />
+                      <div className="flex items-center gap-2 font-bold">
+                        <Copy className="w-4 h-4" />
+                        <span className="sm:hidden">Copy Link</span>
+                      </div>
                     )}
                   </Button>
                 </div>

@@ -54,7 +54,7 @@ function Top3Spotlight({ contestants }: { contestants: ContestantItem[] }) {
   const positions = top3.length === 1 ? [0] : top3.length === 2 ? [1, 0] : [1, 0, 2]
   
   return (
-    <div className="flex items-end justify-center gap-2 sm:gap-8 mb-12 px-2 overflow-x-hidden">
+    <div className="flex items-end justify-center gap-2 sm:gap-8 mb-12 px-4 overflow-x-hidden">
       {positions.map((pos, displayIndex) => {
         const contestant = top3[pos]
         if (!contestant) return null

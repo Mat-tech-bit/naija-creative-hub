@@ -312,8 +312,8 @@ export default function RegisterPage() {
           </Link>
         </div>
 
-        <div className="flex-1 flex items-center justify-center p-4 sm:p-8">
-          <div className="w-full max-w-lg">
+        <div className="flex-1 flex items-center justify-center p-6 sm:p-10 md:p-12">
+          <div className="w-full max-w-lg mx-auto">
             {/* Progress Steps */}
             <div className="mb-8">
               <div className="flex items-center justify-between mb-4 px-2 sm:px-0">
@@ -352,9 +352,9 @@ export default function RegisterPage() {
                     exit={{ opacity: 0, x: -20 }}
                     className="space-y-6"
                   >
-                    <div className="text-center mb-8">
-                      <h2 className="text-2xl font-bold mb-2">Create Your Account</h2>
-                      <p className="text-muted-foreground">Enter your personal information to get started</p>
+                    <div className="text-center mb-10">
+                      <h2 className="text-3xl font-black tracking-tight mb-3">Create Your Account</h2>
+                      <p className="text-sm text-muted-foreground font-medium">Enter your personal information to get started</p>
                     </div>
 
                     <div className="space-y-4">

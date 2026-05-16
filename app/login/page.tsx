@@ -109,15 +109,15 @@ export default function LoginPage() {
           </Link>
         </div>
 
-        <div className="flex-1 flex items-center justify-center p-4 sm:p-8">
+        <div className="flex-1 flex items-center justify-center p-6 sm:p-10 md:p-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="w-full max-w-md"
           >
-            <div className="text-center mb-8">
-              <h2 className="text-2xl sm:text-3xl font-bold mb-2">Sign In</h2>
-              <p className="text-muted-foreground">Enter your credentials to access your account</p>
+            <div className="text-center mb-10">
+              <h2 className="text-3xl font-black tracking-tight mb-3">Sign In</h2>
+              <p className="text-sm text-muted-foreground font-medium">Enter your credentials to access your account</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
