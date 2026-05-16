@@ -1,39 +1,39 @@
 import * as admin from "firebase-admin";
 
-if (!admin.apps.length) {
+const initializeFirebaseAdmin = () => {
+  if (admin.apps.length > 0) {
+    return admin.apps[0];
+  }
+
+  const projectId = process.env.FIREBASE_ADMIN_PROJECT_ID;
+  const clientEmail = process.env.FIREBASE_ADMIN_CLIENT_EMAIL;
   let privateKey = process.env.FIREBASE_ADMIN_PRIVATE_KEY;
-  
-  if (privateKey) {
-    // 1. Remove outer quotes if they exist (standard .env parsing issue)
-    privateKey = privateKey.replace(/^"|"$/g, '');
-    
-    // 2. Handle literal \n and actual newlines
-    // This is the most robust way to handle keys in both local and cloud environments
-    privateKey = privateKey.replace(/\\n/g, "\n");
-    
-    // 3. Ensure the key has the correct header/footer
-    if (!privateKey.includes("-----BEGIN PRIVATE KEY-----")) {
-      console.error("Firebase Admin Private Key is missing the BEGIN header.");
-    }
-  } else {
-    console.error("FIREBASE_ADMIN_PRIVATE_KEY is missing in environment variables.");
+
+  if (!projectId || !clientEmail || !privateKey) {
+    console.warn("Firebase Admin credentials are missing. Skipping initialization.");
+    return null;
   }
 
   try {
-    admin.initializeApp({
+    // Handle literal \n, remove all quotes (robust against various env formats), and trim
+    privateKey = privateKey.replace(/\\n/g, "\n").replace(/['"]/g, "").trim();
+
+    return admin.initializeApp({
       credential: admin.credential.cert({
-        projectId: process.env.FIREBASE_ADMIN_PROJECT_ID,
-        clientEmail: process.env.FIREBASE_ADMIN_CLIENT_EMAIL,
-        privateKey: privateKey,
+        projectId,
+        clientEmail,
+        privateKey,
       }),
     });
-    console.log("Firebase Admin successfully initialized.");
   } catch (error: any) {
     console.error("Firebase Admin initialization error:", error.message);
+    return null;
   }
-}
+};
 
-const adminDb = admin.firestore();
-const adminAuth = admin.auth();
+const app = initializeFirebaseAdmin();
 
-export { adminDb, adminAuth };
+// Export initialized services or null if initialization failed
+// Using a getter or checking app helps avoid "default app does not exist" errors during build
+export const adminDb = app ? app.firestore() : null as unknown as admin.firestore.Firestore;
+export const adminAuth = app ? app.auth() : null as unknown as admin.auth.Auth;
