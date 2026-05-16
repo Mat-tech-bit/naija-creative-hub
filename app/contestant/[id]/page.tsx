@@ -29,7 +29,8 @@ import {
   Award,
   Loader2,
   CheckCircle,
-  LogOut
+  LogOut,
+  Sparkles
 } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
@@ -399,56 +400,59 @@ function ContestantProfileContent() {
               transition={{ delay: 0.1 }}
               className="space-y-6"
             >
-              {/* Profile Header */}
-              <div className="flex items-center gap-4">
-                <div className="relative w-20 h-20 rounded-full overflow-hidden border-4 border-primary/20 bg-muted shrink-0">
-                  {contestant.image ? (
-                    <Image
-                      src={contestant.image}
-                      alt={contestant.name}
-                      fill
-                      className="object-cover"
-                      unoptimized
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <User className="w-8 h-8 text-muted-foreground" />
-                    </div>
-                  )}
-                </div>
-                <div>
-                  <h1 className="text-2xl sm:text-3xl font-bold">{contestant.name}</h1>
-                  <p className="text-muted-foreground flex items-center gap-2">
-                    <Calendar className="w-4 h-4" />
-                    Joined {contestant.joinedDate}
-                  </p>
-                </div>
-              </div>
-
-              {/* Vote Stats */}
-              <div className="glass rounded-2xl p-6">
-                <div className="text-center mb-6">
-                  <p className="text-sm text-muted-foreground mb-2">Total Votes</p>
-                  <div className="text-5xl sm:text-6xl font-bold gradient-text">
-                    <AnimatedVoteCounter votes={contestant.votes ?? 0} />
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-4 border-primary/20 bg-muted shrink-0 shadow-xl">
+                {contestant.image ? (
+                  <Image
+                    src={contestant.image}
+                    alt={contestant.name}
+                    fill
+                    className="object-cover"
+                    unoptimized
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <User className="w-10 h-10 text-muted-foreground" />
                   </div>
-                  <p className="text-sm text-muted-foreground mt-2">
-                    {contestant.rank ? `Rank #${contestant.rank} of ${contestant.totalContestants} contestants` : "Unranked"}
-                  </p>
-                </div>
-
-                {/* Vote Button */}
-                <Button
-                  onClick={() => setIsVoteModalOpen(true)}
-                  className="w-full h-14 gradient-primary border-0 text-white text-lg font-bold shadow-xl shadow-primary/25 animate-pulse-glow hover:scale-[1.02] transition-transform"
-                >
-                  <Heart className="w-5 h-5 mr-2 fill-current" />
-                  Cast Your Vote
-                </Button>
-                <p className="text-xs text-center text-muted-foreground mt-3">
-                  1 vote = ₦50 | Help {contestant.name.split(" ")[0]} win!
+                )}
+              </div>
+              <div className="text-center sm:text-left">
+                <h1 className="text-3xl sm:text-4xl font-black tracking-tight mb-1">{contestant.name}</h1>
+                <p className="text-muted-foreground flex items-center justify-center sm:justify-start gap-2 text-sm font-medium">
+                  <Calendar className="w-4 h-4 text-primary" />
+                  Joined {contestant.joinedDate}
                 </p>
               </div>
+            </div>
+
+            {/* Vote Stats */}
+            <div className="glass rounded-3xl p-6 sm:p-8 relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-primary/10 transition-colors" />
+              
+              <div className="text-center mb-8 relative z-10">
+                <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3 opacity-70">Current Standing</p>
+                <div className="text-6xl sm:text-7xl font-black gradient-text tracking-tighter mb-2">
+                  <AnimatedVoteCounter votes={contestant.votes ?? 0} />
+                </div>
+                <div className="flex items-center justify-center gap-2 text-sm font-bold text-foreground bg-muted/50 w-fit mx-auto px-4 py-1.5 rounded-full">
+                  <Trophy className="w-4 h-4 text-amber-500" />
+                  {contestant.rank ? `Rank #${contestant.rank} of ${contestant.totalContestants}` : "Unranked"}
+                </div>
+              </div>
+
+              {/* Vote Button */}
+              <Button
+                onClick={() => setIsVoteModalOpen(true)}
+                className="w-full h-16 rounded-2xl gradient-primary border-0 text-white text-xl font-black shadow-2xl shadow-primary/30 hover:scale-[1.02] active:scale-95 transition-all duration-300 group"
+              >
+                <Heart className="w-6 h-6 mr-3 fill-current group-hover:animate-ping" />
+                VOTE NOW
+              </Button>
+              <div className="flex items-center justify-center gap-2 mt-4 text-xs font-bold text-muted-foreground/80 uppercase tracking-tighter">
+                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                1 vote = ₦50 | Help {contestant.name.split(" ")[0]} win!
+              </div>
+            </div>
 
               {/* Share Section */}
               <div className="glass rounded-2xl p-6">
@@ -506,42 +510,51 @@ function ContestantProfileContent() {
         </section>
 
         {/* Story Section */}
-        <section className="py-12 bg-muted/30">
-          <div className="container mx-auto px-4">
+        <section className="py-12 sm:py-20 bg-muted/30 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-32 -mt-32" />
+          <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-4xl mx-auto">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
+                className="bg-card/50 backdrop-blur-sm rounded-3xl p-6 sm:p-10 border border-border/50 shadow-xl"
               >
-                <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                  <User className="w-6 h-6 text-primary" />
+                <h2 className="text-2xl sm:text-3xl font-black mb-8 flex items-center gap-3">
+                  <div className="p-2 rounded-xl bg-primary/10">
+                    <User className="w-6 h-6 text-primary" />
+                  </div>
                   My Story
                 </h2>
-                <p className="text-muted-foreground leading-relaxed mb-6">
-                  {contestant.story || contestant.inspiration || "No story provided yet."}
-                </p>
-                
-                {contestant.inspiration && contestant.story !== contestant.inspiration && (
-                  <>
-                    <h3 className="text-lg font-semibold mb-4">What Inspired This Work</h3>
-                    <p className="text-muted-foreground leading-relaxed mb-6">
-                      {contestant.inspiration}
-                    </p>
-                  </>
-                )}
+                <div className="prose prose-sm sm:prose-base dark:prose-invert max-w-none">
+                  <p className="text-muted-foreground leading-relaxed mb-8 text-lg sm:text-xl font-medium italic border-l-4 border-primary/30 pl-6 py-2">
+                    "{contestant.story || contestant.inspiration || "I am passionate about creating impactful work that speaks to the heart of our culture."}"
+                  </p>
+                  
+                  {contestant.inspiration && contestant.story !== contestant.inspiration && (
+                    <div className="mt-10">
+                      <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                        <Sparkles className="w-5 h-5 text-secondary" />
+                        The Inspiration
+                      </h3>
+                      <p className="text-muted-foreground leading-relaxed">
+                        {contestant.inspiration}
+                      </p>
+                    </div>
+                  )}
+                </div>
 
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap gap-3 mt-10 pt-8 border-t border-border/50">
                   {contestant.experience && (
-                    <div className="px-4 py-2 bg-muted rounded-lg">
-                      <span className="text-sm text-muted-foreground">Experience: </span>
-                      <span className="font-medium">{contestant.experience} {Number(contestant.experience) === 1 ? "year" : "years"}</span>
+                    <div className="px-5 py-2.5 bg-primary/5 rounded-2xl border border-primary/10 flex items-center gap-2">
+                      <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Exp:</span>
+                      <span className="font-bold text-sm text-primary">{contestant.experience} {Number(contestant.experience) === 1 ? "Year" : "Years"}</span>
                     </div>
                   )}
                   {contestant.category && (
-                    <div className="px-4 py-2 bg-muted rounded-lg">
-                      <span className="text-sm text-muted-foreground">Category: </span>
-                      <span className="font-medium">{contestant.category}</span>
+                    <div className="px-5 py-2.5 bg-secondary/10 rounded-2xl border border-secondary/10 flex items-center gap-2">
+                      <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Field:</span>
+                      <span className="font-bold text-sm text-secondary-foreground">{contestant.category}</span>
                     </div>
                   )}
                 </div>
@@ -551,81 +564,102 @@ function ContestantProfileContent() {
         </section>
 
         {/* Supporters Section */}
-        <section className="py-12">
+        <section className="py-12 sm:py-24">
           <div className="container mx-auto px-4">
-            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl sm:text-4xl font-black mb-4">Wall of Support</h2>
+              <p className="text-muted-foreground">The incredible people backing {contestant.name.split(' ')[0]}'s journey.</p>
+            </div>
+            
+            <div className="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
               {/* Top Supporters */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                className="glass rounded-2xl p-6"
+                className="glass rounded-3xl p-6 sm:p-8"
               >
-                <h3 className="font-semibold mb-4 flex items-center gap-2">
-                  <Trophy className="w-5 h-5 text-secondary" />
-                  Top Supporters
+                <h3 className="text-xl font-bold mb-6 flex items-center gap-3">
+                  <div className="p-2 rounded-xl bg-amber-500/10">
+                    <Trophy className="w-5 h-5 text-amber-500" />
+                  </div>
+                  Top Benefactors
                 </h3>
                 {contestant.topSupporters && contestant.topSupporters.length > 0 ? (
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     {contestant.topSupporters.map((supporter, index) => (
-                      <div key={index} className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                        <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center shrink-0">
-                          <User className="w-5 h-5 text-muted-foreground" />
+                      <div key={index} className="flex items-center gap-4 p-4 bg-muted/30 hover:bg-muted/50 rounded-2xl transition-all group">
+                        <div className="relative">
+                          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center shrink-0 border border-white/5">
+                            <User className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors" />
+                          </div>
+                          {index < 3 && (
+                            <div className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-secondary text-[10px] font-black flex items-center justify-center border-2 border-background shadow-lg">
+                              {index + 1}
+                            </div>
+                          )}
                         </div>
-                        <div className="flex-1">
-                          <p className="font-medium">{supporter.name}</p>
-                          <p className="text-sm text-muted-foreground">{supporter.votes} votes</p>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-black text-sm sm:text-base truncate">{supporter.name}</p>
+                          <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">{supporter.votes} Votes</p>
                         </div>
-                        <div className={cn(
-                          "w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm",
-                          index === 0 ? "bg-secondary text-secondary-foreground" :
-                          index === 1 ? "bg-gray-300 text-gray-800" :
-                          "bg-amber-700 text-white"
-                        )}>
-                          {index + 1}
+                        <div className="text-xl font-black gradient-text">
+                          #{index + 1}
                         </div>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <p className="text-muted-foreground text-sm text-center py-6">No supporters yet. Be the first to vote!</p>
+                  <div className="text-center py-12 px-4 bg-muted/20 rounded-3xl border border-dashed border-border">
+                    <Heart className="w-10 h-10 text-muted-foreground/30 mx-auto mb-4" />
+                    <p className="text-muted-foreground font-bold">No supporters yet.</p>
+                    <p className="text-xs text-muted-foreground mt-1 px-4">Be the first to fuel this creative spark!</p>
+                  </div>
                 )}
               </motion.div>
 
               {/* Recent Voters */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className="glass rounded-2xl p-6"
+                className="glass rounded-3xl p-6 sm:p-8"
               >
-                <h3 className="font-semibold mb-4 flex items-center gap-2">
-                  <Clock className="w-5 h-5 text-primary" />
-                  Recent Votes
+                <h3 className="text-xl font-bold mb-6 flex items-center gap-3">
+                  <div className="p-2 rounded-xl bg-primary/10">
+                    <Clock className="w-5 h-5 text-primary" />
+                  </div>
+                  Recent Activity
                 </h3>
                 {contestant.recentVoters && contestant.recentVoters.length > 0 ? (
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     {contestant.recentVoters.map((voter, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
+                      <div key={index} className="flex items-center justify-between p-4 bg-muted/30 rounded-2xl border border-white/5">
+                        <div className="flex items-center gap-4 min-w-0">
+                          <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center shrink-0">
                             <User className="w-5 h-5 text-muted-foreground" />
                           </div>
-                          <div>
-                            <p className="font-medium">{voter.name}</p>
-                            <p className="text-xs text-muted-foreground">{voter.time}</p>
+                          <div className="min-w-0">
+                            <p className="font-bold text-sm sm:text-base truncate">{voter.name}</p>
+                            <div className="flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground uppercase">
+                              <Calendar className="w-3 h-3" />
+                              {voter.time}
+                            </div>
                           </div>
                         </div>
-                        <div className="flex items-center gap-1 text-primary">
-                          <Heart className="w-4 h-4 fill-primary" />
-                          <span className="font-medium">+{voter.votes}</span>
+                        <div className="flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full border border-primary/20 shrink-0">
+                          <Heart className="w-3 h-3 fill-primary text-primary animate-pulse" />
+                          <span className="font-black text-xs text-primary">+{voter.votes}</span>
                         </div>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <p className="text-muted-foreground text-sm text-center py-6">No votes recorded yet.</p>
+                  <div className="text-center py-12 px-4 bg-muted/20 rounded-3xl border border-dashed border-border">
+                    <Clock className="w-10 h-10 text-muted-foreground/30 mx-auto mb-4" />
+                    <p className="text-muted-foreground font-bold">Quiet at the moment.</p>
+                  </div>
                 )}
               </motion.div>
             </div>

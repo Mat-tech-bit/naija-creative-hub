@@ -174,31 +174,32 @@ export default function RegisterPage() {
       setErrorMsg("Passwords do not match"); return;
     }
     setIsLoading(true); setErrorMsg("")
+    const loadingToast = toast.loading("Creating your creative profile... Please wait.")
+    
     try {
+      // 1. Create Auth Account
       const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
       const user = userCredential.user;
 
       try {
-        // Upload work image to Cloudinary
-        let workImageUrl = ""
+        // 2. Upload images in parallel for better performance
+        const uploadPromises: Promise<string>[] = [];
+        
         if (formData.workImage) {
-          try {
-            workImageUrl = await uploadToCloudinary(formData.workImage)
-          } catch (uploadError) {
-            console.warn("Work image upload failed:", uploadError)
-          }
+          uploadPromises.push(uploadToCloudinary(formData.workImage));
+        } else {
+          uploadPromises.push(Promise.resolve(""));
         }
 
-        // Upload profile picture to Cloudinary
-        let profileImageUrl = ""
         if (formData.profileImage) {
-          try {
-            profileImageUrl = await uploadToCloudinary(formData.profileImage)
-          } catch (uploadError) {
-            console.warn("Profile image upload failed:", uploadError)
-          }
+          uploadPromises.push(uploadToCloudinary(formData.profileImage));
+        } else {
+          uploadPromises.push(Promise.resolve(""));
         }
 
+        const [workImageUrl, profileImageUrl] = await Promise.all(uploadPromises);
+
+        // 3. Save to Firestore
         await setDoc(doc(db, "users", user.uid), {
           id: user.uid,
           name: formData.fullName,
@@ -222,23 +223,30 @@ export default function RegisterPage() {
           recentVoters: []
         })
 
-        toast.success("Registration successful! Please log in.")
+        toast.success("Registration successful! Welcome to the hub.", { id: loadingToast })
+        
+        // Immediate redirect to login
         router.push('/login')
       } catch (innerErr) {
-        // If Firestore write fails, remove the created auth account to avoid orphaned accounts
+        // If Firestore write or upload fails, remove the created auth account to avoid orphaned accounts
         await deleteUser(user).catch(() => null)
         throw innerErr
       }
     } catch (err) {
       console.error(err)
       const error = err as { code?: string; message?: string }
+      let message = "An error occurred during registration. Please try again."
+      
       if (error.code === "auth/email-already-in-use") {
-        setErrorMsg("An account with this email already exists. Please log in instead.")
+        message = "An account with this email already exists. Please log in instead."
       } else if (error.code === "auth/weak-password") {
-        setErrorMsg("Password must be at least 6 characters.")
-      } else {
-        setErrorMsg(error.message || "An error occurred during registration. Please try again.")
+        message = "Password must be at least 6 characters."
+      } else if (error.message) {
+        message = error.message
       }
+      
+      setErrorMsg(message)
+      toast.error(message, { id: loadingToast })
     } finally {
       setIsLoading(false);
     }
