@@ -64,7 +64,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         // Only allow specific admin email
-        if (user.email === "matthewakinyemi24@gmail.com") {
+        if (user.email === "thenaijacreativehub@gmail.com") {
           setAuthorized(true)
         } else {
           router.push("/")

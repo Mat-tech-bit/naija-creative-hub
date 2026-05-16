@@ -94,7 +94,7 @@ export default function AdminSettingsPage() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email Address</Label>
-                  <Input id="email" defaultValue="matthewakinyemi24@gmail.com" readOnly />
+                  <Input id="email" defaultValue="thenaijacreativehub@gmail.com" readOnly />
                 </div>
               </div>
               <div className="space-y-2">

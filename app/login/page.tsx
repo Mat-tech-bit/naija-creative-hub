@@ -34,7 +34,7 @@ export default function LoginPage() {
       const userCredential = await signInWithEmailAndPassword(auth, formData.email, formData.password);
       const user = userCredential.user;
       
-      if (user.email === "matthewakinyemi24@gmail.com") {
+      if (user.email === "thenaijacreativehub@gmail.com") {
         router.push("/admin");
       } else {
         router.push(`/contestant/${user.uid}`);
