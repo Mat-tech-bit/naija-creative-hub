@@ -11,13 +11,23 @@ export async function POST(req: Request) {
       );
     }
 
+    const secretKey = process.env.PAYSTACK_SECRET_KEY?.trim();
+
+    if (!secretKey) {
+      console.error("PAYSTACK_SECRET_KEY is not defined in environment variables");
+      return NextResponse.json(
+        { status: false, message: "Server configuration error: Payment key missing" },
+        { status: 500 }
+      );
+    }
+
     // Determine the base URL for the callback
     const origin = req.headers.get("origin") || process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
     const paystackResponse = await fetch("https://api.paystack.co/transaction/initialize", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
+        Authorization: `Bearer ${secretKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({

@@ -185,7 +185,7 @@ function ContestantProfileContent() {
         const response = await fetch(`/api/paystack/verify?reference=${refToVerify}`)
         const data = await response.json()
 
-        if (data.status) {
+        if (data.status || data.alreadyProcessed) {
           toast.success(data.message || "Votes updated!", { id: loadingToast })
           // Re-fetch data to show new votes and rank
           const docRef = doc(db, "users", params.id as string)
@@ -206,12 +206,11 @@ function ContestantProfileContent() {
         }
       } catch (error) {
         console.error("Verification Error:", error)
-        toast.error("Network error. Please click 'Retry Verification'.", { id: loadingToast })
+        toast.error("Network error. Please refresh the page.", { id: loadingToast })
       } finally {
         setIsVerifying(false)
-        if (!manualRef) {
-          const newUrl = window.location.pathname;
-          window.history.replaceState({ ...window.history.state, as: newUrl, url: newUrl }, '', newUrl);
+        if (reference) {
+          router.replace(window.location.pathname)
         }
       }
     }
@@ -307,28 +306,6 @@ function ContestantProfileContent() {
         </div>
       )}
 
-      {/* Manual Verification UI (if automatic fails or is slow) */}
-      {!isVerifying && reference && (
-        <div className="container mx-auto px-4 mt-24 -mb-16 relative z-10">
-          <div className="bg-primary/10 border border-primary/20 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary">
-                <CheckCircle className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="font-bold">Wait, did you just pay?</h3>
-                <p className="text-sm text-muted-foreground">If your votes haven't counted yet, you can manually trigger verification.</p>
-              </div>
-            </div>
-            <Button 
-              onClick={() => verifyPayment(reference)}
-              className="gradient-primary border-0 text-white shrink-0"
-            >
-              Verify Payment Manually
-            </Button>
-          </div>
-        </div>
-      )}
 
       <main className={cn("min-h-screen pt-20", isVerifying && "blur-sm")}>
         {/* Back Button */}

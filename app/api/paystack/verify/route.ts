@@ -19,6 +19,9 @@ export async function GET(req: Request) {
     // 1. Verify with Paystack (with retry logic)
     let paystackData;
     let attempts = 0;
+    const secretKey = process.env.PAYSTACK_SECRET_KEY?.trim();
+    if (!secretKey) throw new Error("Payment secret key is not configured.");
+
     while (attempts < 3) {
       try {
         const controller = new AbortController();
@@ -26,7 +29,7 @@ export async function GET(req: Request) {
 
         const paystackResponse = await fetch(`https://api.paystack.co/transaction/verify/${reference}`, {
           headers: {
-            Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
+            Authorization: `Bearer ${secretKey}`,
           },
           signal: controller.signal
         });
@@ -54,18 +57,19 @@ export async function GET(req: Request) {
     const voteCount = Number(metadata.voteCount || 0);
     const contestantName = metadata.contestantName || "Contestant";
 
-    // 2. Check if transaction already processed (using Admin SDK)
-    const voteDocAction = await adminDb.collection("votes").doc(reference).get();
-    if (voteDocAction.exists) {
-      return NextResponse.json(
-        { status: true, message: "Vote already recorded", alreadyProcessed: true }
-      );
-    }
-
-    // 3. Update Contestant and record vote in a transaction (Admin SDK)
+    // 2. Process within a transaction (Atomic check and update)
+    const voteDocRef = adminDb.collection("votes").doc(reference);
     const contestantRef = adminDb.collection("users").doc(contestantId);
     
+    let isAlreadyProcessed = false;
+
     await adminDb.runTransaction(async (transaction) => {
+      const voteDoc = await transaction.get(voteDocRef);
+      if (voteDoc.exists) {
+        isAlreadyProcessed = true;
+        return; // Don't proceed if already processed
+      }
+
       const contestantDoc = await transaction.get(contestantRef);
       if (!contestantDoc.exists) {
         throw new Error("Contestant not found in database.");
@@ -110,7 +114,6 @@ export async function GET(req: Request) {
       });
 
       // Record the transaction
-      const voteDocRef = adminDb.collection("votes").doc(reference);
       transaction.set(voteDocRef, {
         reference,
         contestantId,
@@ -123,9 +126,16 @@ export async function GET(req: Request) {
       });
     });
 
+    if (isAlreadyProcessed) {
+      return NextResponse.json(
+        { status: false, message: "This vote has already been recorded.", alreadyProcessed: true },
+        { status: 400 }
+      );
+    }
+
     return NextResponse.json({
       status: true,
-      message: "Vote recorded successfully",
+      message: "Success! Your votes have been counted.",
       data: { voteCount, contestantName }
     });
 
