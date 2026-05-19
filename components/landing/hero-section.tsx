@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button"
 import { db } from "@/lib/firebase"
 import { collection, getDocs } from "firebase/firestore"
 
+// const alumni = [alumni, setalumni] = usestate()
+
 export function HeroSection() {
   const [stats, setStats] = useState({ votes: "...", contestants: "...", editions: "5", prize: "₦2M+" })
 
@@ -61,11 +63,11 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-8"
+            className="inline-flex items-center gap-2 px-6 py-2 bg-primary text-primary-foreground mb-8 brush-stroke shadow-lg"
           >
-            <Sparkles className="w-4 h-4 text-secondary" />
-            <span className="text-sm font-medium">Edition 5 Now Live</span>
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+            <Sparkles className="w-4 h-4" />
+            <span className="text-sm font-bold uppercase tracking-wider">Edition 5 Now Live</span>
+            <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
           </motion.div>
 
           {/* Headline */}
@@ -75,8 +77,8 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 text-balance"
           >
-            Discover & Celebrate{" "}
-            <span className="gradient-text">Creative Talent</span>
+            Naija <span className="gradient-text">Creates.</span><br />
+            The World <span className="gradient-text">Celebrates.</span>
           </motion.h1>
 
           {/* Subheadline */}

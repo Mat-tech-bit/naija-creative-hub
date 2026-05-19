@@ -37,15 +37,15 @@ export function Footer() {
           {/* Brand Column */}
           <div className="lg:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-6">
-              <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center">
-                <Trophy className="w-5 h-5 text-white" />
+              <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center overflow-hidden">
+                <img src="/favicon.ico" alt="NaijaCreativeHub Logo" className="w-8 h-8 object-contain" />
               </div>
               <span className="text-xl font-bold">
-                Creative<span className="gradient-text">Vote</span>
+                Naija<span className="gradient-text">CreativeHub</span>
               </span>
             </Link>
             <p className="text-muted-foreground text-sm mb-6 leading-relaxed">
-              The premier voting-based creative competition platform. Discover and support talented young creatives in Photography, Fashion Design, and Graphics Design.
+              The premier creative community platform for Nigeria. Discover and support talented young creatives in Photography, Fashion Design, and Graphics Design.
             </p>
             <div className="flex gap-3">
               {socialLinks.map((social) => (
@@ -116,7 +116,7 @@ export function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start gap-3 text-sm text-muted-foreground">
                 <Mail className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                <span>support@creativevote.com</span>
+                <span>hello@naijacreativehub.com</span>
               </li>
               <li className="flex items-start gap-3 text-sm text-muted-foreground">
                 <Phone className="w-5 h-5 text-primary shrink-0 mt-0.5" />
@@ -146,7 +146,7 @@ export function Footer() {
       <div className="border-t border-border">
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
-            <p>&copy; {new Date().getFullYear()} CreativeVote. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} NaijaCreativeHub. All rights reserved.</p>
             <div className="flex gap-6">
               <Link href="/terms" className="hover:text-primary transition-colors">
                 Terms of Service

@@ -10,7 +10,7 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { toast } from "sonner"
 import { 
-  Heart, 
+  ThumbsUp, 
   Share2, 
   Copy, 
   Check,
@@ -238,7 +238,7 @@ function ContestantProfileContent() {
         </div>
         <div className="space-y-2">
             <h2 className="text-xl font-bold tracking-tight">Syncing Profile...</h2>
-            <p className="text-sm text-muted-foreground">Connecting to the Creative Hub</p>
+            <p className="text-sm text-muted-foreground">Connecting to the NaijaCreativeHub</p>
         </div>
       </div>
     )
@@ -278,7 +278,7 @@ function ContestantProfileContent() {
   }
 
   const shareOnSocial = (platform: string) => {
-    const text = `Check out ${contestant.name}'s amazing work on the Creative Hub and cast your vote! Support local talent.`
+    const text = `Check out ${contestant.name}'s amazing work on the NaijaCreativeHub and cast your vote! Support local talent.`
     const url = encodeURIComponent(liveReferralLink)
     const encodedText = encodeURIComponent(text)
     const urls: Record<string, string> = {
@@ -299,7 +299,7 @@ function ContestantProfileContent() {
         <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background/80 backdrop-blur-md">
           <div className="relative">
             <div className="w-20 h-20 rounded-full border-4 border-primary/20 border-t-primary animate-spin" />
-            <Heart className="absolute inset-0 m-auto w-8 h-8 text-primary animate-pulse" />
+            <ThumbsUp className="absolute inset-0 m-auto w-8 h-8 text-primary animate-pulse" />
           </div>
           <h2 className="text-2xl font-bold mt-8 mb-2">Verifying Your Vote</h2>
           <p className="text-muted-foreground animate-pulse text-center px-4">Connecting to Paystack... <br/>(This may take a moment if your network is slow)</p>
@@ -428,8 +428,9 @@ function ContestantProfileContent() {
               
               <div className="text-center mb-8 relative z-10">
                 <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3 opacity-70">Current Standing</p>
-                <div className="text-6xl sm:text-7xl font-black gradient-text tracking-tighter mb-2">
+                <div className="text-6xl sm:text-7xl font-black gradient-text tracking-tighter mb-2 flex items-baseline justify-center gap-2">
                   <AnimatedVoteCounter votes={contestant.votes ?? 0} />
+                  <span className="text-xl sm:text-2xl font-bold text-muted-foreground uppercase tracking-normal">vote(s)</span>
                 </div>
                 <div className="flex items-center justify-center gap-2 text-sm font-bold text-foreground bg-muted/50 w-fit mx-auto px-4 py-1.5 rounded-full">
                   <Trophy className="w-4 h-4 text-amber-500" />
@@ -440,9 +441,9 @@ function ContestantProfileContent() {
               {/* Vote Button */}
               <Button
                 onClick={() => setIsVoteModalOpen(true)}
-                className="w-full h-16 rounded-2xl gradient-primary border-0 text-white text-xl font-black shadow-2xl shadow-primary/30 hover:scale-[1.02] active:scale-95 transition-all duration-300 group"
+                className="w-full h-16 rounded-2xl gradient-primary border-0 text-white text-xl font-black shadow-2xl shadow-primary/30 hover:scale-[1.02] active:scale-95 transition-all duration-300 group flex items-center justify-center"
               >
-                <Heart className="w-6 h-6 mr-3 fill-current group-hover:animate-ping" />
+                <ThumbsUp className="w-6 h-6 mr-3 fill-current group-hover:animate-ping" />
                 VOTE NOW
               </Button>
               <div className="flex items-center justify-center gap-2 mt-4 text-xs font-bold text-muted-foreground/80 uppercase tracking-tighter">
@@ -614,7 +615,7 @@ function ContestantProfileContent() {
                   </div>
                 ) : (
                   <div className="text-center py-12 px-4 bg-muted/20 rounded-3xl border border-dashed border-border">
-                    <Heart className="w-10 h-10 text-muted-foreground/30 mx-auto mb-4" />
+                    <ThumbsUp className="w-10 h-10 text-muted-foreground/30 mx-auto mb-4" />
                     <p className="text-muted-foreground font-bold">No supporters yet.</p>
                     <p className="text-xs text-muted-foreground mt-1 px-4">Be the first to fuel this creative spark!</p>
                   </div>
@@ -652,7 +653,7 @@ function ContestantProfileContent() {
                           </div>
                         </div>
                         <div className="flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full border border-primary/20 shrink-0">
-                          <Heart className="w-3 h-3 fill-primary text-primary animate-pulse" />
+                          <ThumbsUp className="w-3 h-3 fill-primary text-primary animate-pulse" />
                           <span className="font-black text-xs text-primary">+{voter.votes}</span>
                         </div>
                       </div>
@@ -686,9 +687,9 @@ function ContestantProfileContent() {
               window.history.replaceState({}, '', window.location.pathname);
               setIsVoteModalOpen(true);
             }}
-            className="flex-1 h-12 gradient-primary border-0 text-white font-bold shadow-lg shadow-primary/20"
+            className="flex-1 h-12 gradient-primary border-0 text-white font-bold shadow-lg shadow-primary/20 flex items-center justify-center"
           >
-            <Heart className="w-5 h-5 mr-2 fill-current" />
+            <ThumbsUp className="w-5 h-5 mr-2 fill-current" />
             Vote Now
           </Button>
         </div>

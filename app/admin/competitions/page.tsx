@@ -10,7 +10,7 @@ export default function AdminCompetitionsPage() {
   const competitions = [
     {
       id: "comp_2024",
-      name: "Creative Edge 2024",
+      name: "NaijaCreativeHub 2024",
       status: "active",
       startDate: "Jan 2024",
       endDate: "Dec 2024",
@@ -20,7 +20,7 @@ export default function AdminCompetitionsPage() {
     },
     {
       id: "comp_2023",
-      name: "Creative Edge 2023",
+      name: "NaijaCreativeHub 2023",
       status: "completed",
       startDate: "Jan 2023",
       endDate: "Dec 2023",

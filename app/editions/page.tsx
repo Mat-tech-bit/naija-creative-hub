@@ -26,7 +26,7 @@ import {
 const editions = [
   {
     id: "2024",
-    name: "Creative Edge 2024",
+    name: "NaijaCreativeHub 2024",
     status: "active",
     theme: "Breaking Boundaries",
     startDate: "November 1, 2024",
@@ -36,7 +36,7 @@ const editions = [
     prizePool: "₦5,000,000",
     categories: ["Photography", "Fashion Design", "Graphics Design"],
     description:
-      "Our biggest edition yet! Creative Edge 2024 brings together the most talented young creatives from across Nigeria to compete for glory and incredible prizes.",
+      "Our biggest edition yet! NaijaCreativeHub 2024 brings together the most talented young creatives from across Nigeria to compete for glory and incredible prizes.",
     highlights: [
       "Largest prize pool ever",
       "International judges panel",
@@ -46,7 +46,7 @@ const editions = [
   },
   {
     id: "2023",
-    name: "Creative Edge 2023",
+    name: "NaijaCreativeHub 2023",
     status: "completed",
     theme: "Digital Renaissance",
     startDate: "October 15, 2023",
@@ -71,7 +71,7 @@ const editions = [
   },
   {
     id: "2022",
-    name: "Creative Edge 2022",
+    name: "NaijaCreativeHub 2022",
     status: "completed",
     theme: "New Horizons",
     startDate: "September 1, 2022",

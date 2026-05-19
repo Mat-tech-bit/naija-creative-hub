@@ -9,7 +9,7 @@ import {
   CreditCard, 
   CheckCircle, 
   Loader2,
-  Heart
+  ThumbsUp
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"

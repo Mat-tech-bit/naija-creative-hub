@@ -248,15 +248,15 @@ export default function AdminDashboard() {
                       <TableRow key={user.id} className="group hover:bg-muted/30 transition-colors">
                         <TableCell className="px-6 py-4">
                           <div className="flex items-center gap-3">
-                            <Avatar className="h-10 w-10 rounded-xl">
+                            <Avatar className="h-10 w-10 rounded-xl shrink-0">
                               <AvatarImage src={user.image} className="object-cover" />
                               <AvatarFallback className="bg-primary/5 text-primary text-xs font-bold">
                                 {user.name?.charAt(0)}
                               </AvatarFallback>
                             </Avatar>
-                            <div className="flex flex-col">
-                              <span className="font-bold text-sm tracking-tight">{user.name}</span>
-                              <span className="text-[10px] text-muted-foreground">{user.email}</span>
+                            <div className="flex flex-col min-w-0">
+                              <span className="font-bold text-sm tracking-tight truncate block max-w-[120px] sm:max-w-xs">{user.name}</span>
+                              <span className="text-[10px] text-muted-foreground truncate block max-w-[120px] sm:max-w-xs">{user.email}</span>
                             </div>
                           </div>
                         </TableCell>

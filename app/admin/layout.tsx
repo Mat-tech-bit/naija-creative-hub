@@ -133,8 +133,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           {/* Sidebar Header */}
           <div className="flex h-16 items-center justify-between px-4 border-b border-border/50 bg-card/50 backdrop-blur shrink-0">
             <Link href="/admin" className="flex items-center gap-3">
-              <div className="w-9 h-9 bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/20 shrink-0">
-                <Zap className="h-5 w-5 text-primary-foreground" />
+              <div className="w-9 h-9 bg-white rounded-xl flex items-center justify-center shadow-lg overflow-hidden shrink-0">
+                <img src="/favicon.ico" alt="NaijaCreativeHub Logo" className="h-7 w-7 object-contain" />
               </div>
               {sidebarOpen && (
                 <motion.span 
@@ -142,7 +142,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   animate={{ opacity: 1, x: 0 }}
                   className="font-bold text-lg tracking-tight"
                 >
-                  Admin<span className="text-primary italic">Hub</span>
+                  Naija<span className="text-primary">Hub</span>
                 </motion.span>
               )}
             </Link>
@@ -323,7 +323,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         {/* Footer Area */}
         <footer className="px-8 py-4 border-t border-border/50 flex flex-col sm:flex-row items-center justify-between text-[10px] uppercase font-bold tracking-widest text-muted-foreground shrink-0 gap-2">
-            <div>&copy; 2024 CreativeVote Administrative Portal</div>
+            <div>&copy; {new Date().getFullYear()} NaijaCreativeHub Administrative Portal</div>
             <div className="flex items-center gap-4">
                 <span className="flex items-center gap-1.5">
                     <div className="w-1.5 h-1.5 rounded-full bg-primary" />

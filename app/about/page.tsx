@@ -89,7 +89,7 @@ const milestones = [
   {
     year: "2022",
     title: "The Beginning",
-    description: "Creative Edge launched with 1,500 contestants and a vision to transform creative competitions in Nigeria.",
+    description: "NaijaCreativeHub launched with 1,500 contestants and a vision to transform creative competitions in Nigeria.",
   },
   {
     year: "2023",
@@ -165,7 +165,7 @@ export default function AboutPage() {
               </span>
             </h1>
             <p className="text-lg text-muted-foreground text-pretty">
-              Creative Edge is Nigeria&apos;s premier platform for discovering, celebrating, and
+              NaijaCreativeHub is Nigeria&apos;s premier platform for discovering, celebrating, and
               launching the careers of young creative talents through exciting competitions.
             </p>
           </motion.div>
@@ -211,7 +211,7 @@ export default function AboutPage() {
                 Discovering Tomorrow&apos;s Creative Leaders Today
               </h2>
               <p className="text-muted-foreground mb-6">
-                We started Creative Edge with a simple belief: talent exists everywhere, but
+                We started NaijaCreativeHub with a simple belief: talent exists everywhere, but
                 opportunity doesn&apos;t. Our mission is to bridge that gap by creating a platform where
                 creative skills are recognized, celebrated, and rewarded.
               </p>
@@ -280,7 +280,7 @@ export default function AboutPage() {
             </Badge>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">What We Stand For</h2>
             <p className="text-muted-foreground">
-              These core values guide everything we do at Creative Edge.
+              These core values guide everything we do at NaijaCreativeHub.
             </p>
           </motion.div>
 
@@ -372,7 +372,7 @@ export default function AboutPage() {
               <Users className="h-3 w-3 mr-1" />
               The Team
             </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Meet the People Behind Creative Edge</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Meet the People Behind NaijaCreativeHub</h2>
             <p className="text-muted-foreground">
               A passionate team dedicated to empowering creative talents across Nigeria.
             </p>
@@ -417,7 +417,7 @@ export default function AboutPage() {
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Join Our Community</h2>
               <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
                 Whether you&apos;re a contestant, supporter, or potential partner, there&apos;s a place
-                for you in the Creative Edge family.
+                for you in the NaijaCreativeHub family.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <Button asChild size="lg" className="gradient-primary border-0 text-white shadow-lg shadow-primary/25">

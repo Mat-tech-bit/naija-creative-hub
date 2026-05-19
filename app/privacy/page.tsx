@@ -47,7 +47,7 @@ const sections = [
 
 • Service Providers: We share information with third-party vendors who perform services on our behalf (payment processing, analytics, customer support).
 
-• Legal Requirements: We may disclose information if required by law or to protect the rights, property, or safety of Creative Edge, our users, or others.
+• Legal Requirements: We may disclose information if required by law or to protect the rights, property, or safety of NaijaCreativeHub, our users, or others.
 
 • Business Transfers: In connection with any merger, acquisition, or sale of assets.
 
@@ -76,7 +76,7 @@ While we strive to protect your information, no method of transmission over the 
 • Data Portability: Request a copy of your data in a portable format
 • Withdrawal of Consent: Withdraw consent for data processing where applicable
 
-To exercise these rights, contact us at privacy@creativeedge.ng`,
+To exercise these rights, contact us at hello@naijacreativehub.com`,
   },
   {
     title: "6. Cookies and Tracking",
@@ -151,11 +151,11 @@ Third-party services we integrate with have their own privacy policies.`,
     title: "12. Contact Us",
     content: `For questions or concerns about this Privacy Policy or our data practices:
 
-Email: privacy@creativeedge.ng
-Address: 15 Creative Hub Avenue, Victoria Island, Lagos, Nigeria
-Phone: +234 801 234 5678
+Email: hello@naijacreativehub.com
+Address: Lagos, Nigeria
+Phone: +234 800 000 0000
 
-For data protection inquiries, you may also contact our Data Protection Officer at dpo@creativeedge.ng`,
+For data protection inquiries, you may also contact our Data Protection Officer at dpo@naijacreativehub.com`,
   },
 ]
 
@@ -246,7 +246,7 @@ export default function PrivacyPage() {
             <Card className="mt-8 bg-primary/5 border-primary/20">
               <CardContent className="p-6">
                 <p className="text-center text-muted-foreground">
-                  By using Creative Edge, you consent to the collection and use of your information
+                  By using NaijaCreativeHub, you consent to the collection and use of your information
                   as described in this Privacy Policy. If you have any questions, please{" "}
                   <Link href="/contact" className="text-primary hover:underline">
                     contact us

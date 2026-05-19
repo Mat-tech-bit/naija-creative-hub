@@ -61,11 +61,11 @@ export default function LoginPage() {
         
         <div className="relative z-10 flex flex-col justify-center p-12 xl:p-16">
           <Link href="/" className="flex items-center gap-2 mb-12">
-            <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center">
-              <Trophy className="w-5 h-5 text-white" />
+            <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center overflow-hidden shadow-lg">
+              <img src="/favicon.ico" alt="NaijaCreativeHub Logo" className="w-8 h-8 object-contain" />
             </div>
             <span className="text-xl font-bold">
-              Creative<span className="gradient-text">Vote</span>
+              Naija<span className="gradient-text">CreativeHub</span>
             </span>
           </Link>
           
@@ -100,11 +100,11 @@ export default function LoginPage() {
         {/* Mobile Header */}
         <div className="lg:hidden p-4 border-b border-border">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center">
-              <Trophy className="w-4 h-4 text-white" />
+            <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center overflow-hidden">
+              <img src="/favicon.ico" alt="NaijaCreativeHub Logo" className="w-6 h-6 object-contain" />
             </div>
             <span className="font-bold">
-              Creative<span className="gradient-text">Vote</span>
+              Naija<span className="gradient-text">CreativeHub</span>
             </span>
           </Link>
         </div>
@@ -195,7 +195,7 @@ export default function LoginPage() {
               </div>
               <div className="relative flex justify-center text-xs uppercase">
                 <span className="bg-background px-2 text-muted-foreground">
-                  New to CreativeVote?
+                  New to NaijaCreativeHub?
                 </span>
               </div>
             </div>

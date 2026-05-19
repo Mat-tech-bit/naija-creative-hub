@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 import Link from "next/link"
 import Image from "next/image"
-import { Heart, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react"
+import { ThumbsUp, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useState, useRef } from "react"
 
@@ -122,7 +122,7 @@ function ContestantCard({ contestant, index }: { contestant: typeof featuredCont
                 <div>
                   <h3 className="font-semibold text-white">{contestant.name}</h3>
                   <div className="flex items-center gap-1.5 text-white/70 text-sm">
-                    <Heart className="w-3.5 h-3.5 fill-red-500 text-red-500" />
+                    <ThumbsUp className="w-3.5 h-3.5 fill-primary text-primary" />
                     <span>{contestant.votes.toLocaleString()} votes</span>
                   </div>
                 </div>

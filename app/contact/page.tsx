@@ -51,7 +51,7 @@ const contactInfo = [
   {
     icon: MapPin,
     title: "Visit Us",
-    details: ["15 Creative Hub Avenue", "Victoria Island, Lagos, Nigeria"],
+    details: ["15 NaijaCreativeHub Avenue", "Victoria Island, Lagos, Nigeria"],
     description: "By appointment only",
   },
   {
@@ -337,7 +337,7 @@ export default function ContactPage() {
                 <CardContent className="p-8">
                   <h3 className="text-xl font-semibold mb-4">Follow Us</h3>
                   <p className="text-muted-foreground mb-6">
-                    Stay connected with Creative Edge on social media for updates, behind-the-scenes
+                    Stay connected with NaijaCreativeHub on social media for updates, behind-the-scenes
                     content, and more.
                   </p>
                   <div className="flex gap-4">

@@ -49,7 +49,7 @@ export default function AdminSettingsPage() {
           <Card>
             <CardHeader>
               <CardTitle>Platform Configuration</CardTitle>
-              <CardDescription>Global settings for the Creative Edge competition</CardDescription>
+              <CardDescription>Global settings for the NaijaCreativeHub competition</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="flex items-center justify-between">

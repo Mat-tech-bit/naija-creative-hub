@@ -22,7 +22,9 @@ import {
   CheckCircle,
   Image as ImageIcon,
   FileText,
-  Sparkles
+  Sparkles,
+  Eye,
+  EyeOff
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -65,6 +67,8 @@ export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState("")
   const [agreedToTerms, setAgreedToTerms] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -262,11 +266,11 @@ export default function RegisterPage() {
 
         <div className="relative z-10 flex flex-col justify-center p-12 xl:p-16">
           <Link href="/" className="flex items-center gap-2 mb-12">
-            <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center">
-              <Trophy className="w-5 h-5 text-white" />
+            <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center overflow-hidden shadow-lg">
+              <img src="/favicon.ico" alt="NaijaCreativeHub Logo" className="w-8 h-8 object-contain" />
             </div>
             <span className="text-xl font-bold">
-              Creative<span className="gradient-text">Vote</span>
+              Naija<span className="gradient-text">CreativeHub</span>
             </span>
           </Link>
 
@@ -303,11 +307,11 @@ export default function RegisterPage() {
         {/* Mobile Header */}
         <div className="lg:hidden p-4 border-b border-border">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center">
-              <Trophy className="w-4 h-4 text-white" />
+            <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center overflow-hidden">
+              <img src="/favicon.ico" alt="NaijaCreativeHub Logo" className="w-6 h-6 object-contain" />
             </div>
             <span className="font-bold">
-              Creative<span className="gradient-text">Vote</span>
+              Naija<span className="gradient-text">CreativeHub</span>
             </span>
           </Link>
         </div>
@@ -427,13 +431,20 @@ export default function RegisterPage() {
                           <Input
                             id="password"
                             name="password"
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             placeholder="Create a password"
                             value={formData.password}
                             onChange={handleChange}
-                            className="pl-10 h-12"
+                            className="pl-10 pr-10 h-12"
                             required
                           />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                          >
+                            {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                          </button>
                         </div>
                       </div>
 
@@ -444,13 +455,20 @@ export default function RegisterPage() {
                           <Input
                             id="confirmPassword"
                             name="confirmPassword"
-                            type="password"
+                            type={showConfirmPassword ? "text" : "password"}
                             placeholder="Confirm your password"
                             value={formData.confirmPassword}
                             onChange={handleChange}
-                            className="pl-10 h-12"
+                            className="pl-10 pr-10 h-12"
                             required
                           />
+                          <button
+                            type="button"
+                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                          >
+                            {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                          </button>
                         </div>
                       </div>
                     </div>

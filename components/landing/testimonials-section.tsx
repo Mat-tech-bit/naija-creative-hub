@@ -10,7 +10,7 @@ const testimonials = [
     name: "Blessing Okoro",
     role: "Photography Winner, Edition 3",
     image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop",
-    quote: "CreativeVote gave me the platform to showcase my work to thousands of people. The exposure and recognition I received changed my career trajectory completely.",
+    quote: "NaijaCreativeHub gave me the platform to showcase my work to thousands of people. The exposure and recognition I received changed my career trajectory completely.",
     rating: 5,
   },
   {
@@ -26,7 +26,7 @@ const testimonials = [
     name: "Amara Eze",
     role: "Fashion Design Winner, Edition 2",
     image: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=200&h=200&fit=crop",
-    quote: "From a small-town designer to winning a national competition - CreativeVote made my dream possible. The prize money helped me start my own fashion line.",
+    quote: "From a small-town designer to winning a national competition - NaijaCreativeHub made my dream possible. The prize money helped me start my own fashion line.",
     rating: 5,
   },
 ]
@@ -65,7 +65,7 @@ export function TestimonialsSection() {
             transition={{ delay: 0.2 }}
             className="text-muted-foreground"
           >
-            Hear from past participants about their CreativeVote experience.
+            Hear from past participants about their NaijaCreativeHub experience.
           </motion.p>
         </div>
 

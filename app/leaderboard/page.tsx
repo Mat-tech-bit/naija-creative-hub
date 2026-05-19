@@ -8,7 +8,7 @@ import { db } from "@/lib/firebase"
 import { motion } from "framer-motion"
 import { 
   Trophy, 
-  Heart, 
+  ThumbsUp, 
   Search, 
   Camera,
   Palette,
@@ -54,7 +54,7 @@ function Top3Spotlight({ contestants }: { contestants: ContestantItem[] }) {
   const positions = top3.length === 1 ? [0] : top3.length === 2 ? [1, 0] : [1, 0, 2]
   
   return (
-    <div className="flex items-end justify-center gap-2 sm:gap-8 mb-12 px-4 overflow-x-hidden">
+    <div className="flex items-end justify-center gap-2 sm:gap-8 mb-12 px-4">
       {positions.map((pos, displayIndex) => {
         const contestant = top3[pos]
         if (!contestant) return null
@@ -88,16 +88,16 @@ function Top3Spotlight({ contestants }: { contestants: ContestantItem[] }) {
                   <Trophy className="w-6 h-6" />
                 </div>
                 <div className="text-2xl font-bold">#{pos + 1}</div>
-                <div className="flex items-center gap-1 mt-2 text-sm">
-                  <Heart className="w-3 h-3 fill-red-500 text-red-500" />
+                <div className="flex items-center justify-center gap-1 mt-2 text-sm">
+                  <ThumbsUp className="w-3 h-3 fill-primary text-primary" />
                   {contestant.votes.toLocaleString()}
                 </div>
               </div>
               
               {/* Profile Image */}
-              <div className="absolute -top-16 left-1/2 -translate-x-1/2">
+              <div className="absolute -top-16 left-1/2 -translate-x-1/2 flex justify-center">
                 <div className={cn(
-                  "relative rounded-full overflow-hidden border-4 transition-transform group-hover:scale-105 bg-muted",
+                  "relative rounded-full overflow-hidden border-4 transition-transform group-hover:scale-105 bg-muted mx-auto",
                   isFirst ? "w-24 h-24 sm:w-28 sm:h-28 border-yellow-500" : "w-20 h-20 sm:w-24 sm:h-24 border-muted"
                 )}>
                   {contestant.image ? (
@@ -116,7 +116,7 @@ function Top3Spotlight({ contestants }: { contestants: ContestantItem[] }) {
               </div>
             </Link>
             
-            <p className="text-center font-medium mt-2 text-sm sm:text-base truncate w-24 sm:w-32">
+            <p className="text-center font-medium mt-2 text-sm sm:text-base truncate w-24 sm:w-32 mx-auto">
               {contestant.name.split(" ")[0]}
             </p>
           </motion.div>

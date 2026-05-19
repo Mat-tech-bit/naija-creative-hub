@@ -9,7 +9,7 @@ import {
   Medal, 
   Award,
   Calendar,
-  Heart,
+  ThumbsUp,
   Camera,
   Palette,
   Brush,
@@ -138,7 +138,7 @@ function WinnerCard({ winner, index }: { winner: typeof allWinners[0]; index: nu
 
             <div className="flex items-center justify-between pt-4 border-t border-white/5">
               <div className="flex items-center gap-2">
-                <Heart className="w-4 h-4 fill-red-500 text-red-500" />
+                <ThumbsUp className="w-4 h-4 fill-primary text-primary" />
                 <span className="text-sm font-medium text-muted-foreground">
                   {winner.votes.toLocaleString()} <span className="text-[10px] uppercase opacity-60">votes</span>
                 </span>

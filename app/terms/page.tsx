@@ -23,13 +23,13 @@ export default function TermsPage() {
       id: "eligibility",
       icon: UserCheck,
       title: "1. Eligibility",
-      content: "To participate in CreativeVote contests, you must be a resident of Nigeria. By registering, you warrant that you have the legal authority to enter this agreement and abide by all rules. CreativeVote reserves the right to disqualify any participant who provides false information."
+      content: "To participate in NaijaCreativeHub contests, you must be a resident of Nigeria. By registering, you warrant that you have the legal authority to enter this agreement and abide by all rules. NaijaCreativeHub reserves the right to disqualify any participant who provides false information."
     },
     {
       id: "nature",
       icon: Scale,
       title: "2. Nature of Competition",
-      content: "CreativeVote provides a platform for skill-based talent competitions. We strongly emphasize that these contests are for entertainment and talent discovery only. Participation constitutes entry into a competition and NOT an investment opportunity. We discourage taking financial risks beyond your means for participation."
+      content: "NaijaCreativeHub provides a platform for skill-based talent competitions. We strongly emphasize that these contests are for entertainment and talent discovery only. Participation constitutes entry into a competition and NOT an investment opportunity. We discourage taking financial risks beyond your means for participation."
     },
     {
       id: "refunds",
@@ -53,7 +53,7 @@ export default function TermsPage() {
       id: "privacy",
       icon: ShieldCheck,
       title: "5. Privacy Policy",
-      content: "We value your privacy. CreativeVote collects and stores information you provide during registration (email, name, category, and submissions). We do not share your private contact information with third parties. Anonymous data regarding platform usage may be used to improve our services."
+      content: "We value your privacy. NaijaCreativeHub collects and stores information you provide during registration (email, name, category, and submissions). We do not share your private contact information with third parties. Anonymous data regarding platform usage may be used to improve our services."
     },
     {
       id: "voting",
@@ -71,7 +71,7 @@ export default function TermsPage() {
       id: "usage",
       icon: FileText,
       title: "8. Rights & Intellectual Property",
-      content: "By submitting content, you grant CreativeVote the right to use and republish your name and photographs/videos in our marketing materials and across our platform. You warrant that you have obtained all necessary permissions from anyone else appearing in your submissions."
+      content: "By submitting content, you grant NaijaCreativeHub the right to use and republish your name and photographs/videos in our marketing materials and across our platform. You warrant that you have obtained all necessary permissions from anyone else appearing in your submissions."
     }
   ]
 
@@ -145,14 +145,14 @@ export default function TermsPage() {
                 <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
                   <ShieldCheck className="w-24 h-24 text-primary" />
                 </div>
-                <h2 className="text-2xl font-bold mb-4 text-foreground">Welcome to CreativeVote</h2>
+                <h2 className="text-2xl font-bold mb-4 text-foreground">Welcome to NaijaCreativeHub</h2>
                 <div className="space-y-4 text-muted-foreground leading-relaxed">
                   <p>
                     These Terms & Conditions constitute a legally binding agreement between you ("User", "Participant", or "Contestant") 
-                    and CreativeVote ("we", "us", or "our").
+                    and NaijaCreativeHub ("we", "us", or "our").
                   </p>
                   <p>
-                    By accessing CreativeVote, browsing the website, or participating in any contest, you acknowledge that you 
+                    By accessing NaijaCreativeHub, browsing the website, or participating in any contest, you acknowledge that you 
                     have read, understood, and agree to be bound by these terms. If you do not agree, please discontinue use immediately.
                   </p>
                 </div>
