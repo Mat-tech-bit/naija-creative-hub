@@ -32,7 +32,7 @@ const prizes = [
 
 export function PrizePoolSection() {
   return (
-    <section className="py-24 bg-muted/30 relative overflow-hidden">
+    <section className="py-16 bg-muted/30 relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute top-1/2 left-1/4 w-96 h-96 rounded-full bg-secondary/10 blur-[120px]" />
       <div className="absolute bottom-0 right-1/4 w-80 h-80 rounded-full bg-primary/10 blur-[100px]" />

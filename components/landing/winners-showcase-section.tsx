@@ -38,7 +38,7 @@ const pastWinners = [
 
 export function WinnersShowcaseSection() {
   return (
-    <section className="py-24 relative">
+    <section className="py-16 relative">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-12">

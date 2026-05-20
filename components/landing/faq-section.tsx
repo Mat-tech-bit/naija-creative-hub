@@ -73,7 +73,7 @@ function FAQItem({ faq, index }: { faq: typeof faqs[0]; index: number }) {
 
 export function FAQSection() {
   return (
-    <section className="py-24 relative">
+    <section className="py-16 relative">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto">
           {/* Header */}

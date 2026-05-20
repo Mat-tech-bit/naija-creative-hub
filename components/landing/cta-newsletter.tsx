@@ -24,7 +24,7 @@ export function CTANewsletter() {
   }
 
   return (
-    <section className="py-24 relative overflow-hidden">
+    <section className="py-16 relative overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="relative rounded-[3rem] bg-gradient-to-br from-primary via-primary/90 to-accent p-8 sm:p-16 lg:p-24 overflow-hidden border border-white/10 shadow-2xl">
           {/* Animated Background Elements */}

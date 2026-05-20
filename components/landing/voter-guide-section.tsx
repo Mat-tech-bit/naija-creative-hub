@@ -40,7 +40,7 @@ const steps = [
 
 export function VoterGuideSection() {
   return (
-    <section className="py-24 bg-muted/20 relative overflow-hidden">
+    <section className="py-16 bg-muted/20 relative overflow-hidden">
       {/* Decorative Elements */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -mr-64 -mt-64" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-secondary/5 rounded-full blur-[120px] -ml-64 -mb-64" />

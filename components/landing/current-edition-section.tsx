@@ -91,7 +91,7 @@ export function CurrentEditionSection() {
   }
 
   return (
-    <section className="py-24 relative overflow-hidden">
+    <section className="py-16 relative overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-muted/30" />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />

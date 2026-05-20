@@ -35,7 +35,7 @@ export function HeroSection() {
   }, [])
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+    <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden pt-24 pb-12">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-muted/20" />
       
@@ -57,13 +57,13 @@ export function HeroSection() {
 
       {/* Content */}
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-5xl mx-auto text-center">
+        <div className="max-w-6xl mx-auto text-center">
           {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-6 py-2 bg-primary text-primary-foreground mb-8 brush-stroke shadow-lg"
+            className="inline-flex items-center gap-2 px-6 py-2 bg-primary text-primary-foreground mb-6 brush-stroke shadow-lg"
           >
             <Sparkles className="w-4 h-4" />
             <span className="text-sm font-bold uppercase tracking-wider">Edition 5 Now Live</span>
@@ -75,7 +75,7 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 text-balance"
+            className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold leading-[1.1] mb-6 text-balance"
           >
             Naija <span className="gradient-text">Creates.</span><br />
             The World <span className="gradient-text">Celebrates.</span>
@@ -86,7 +86,7 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed text-balance"
+            className="text-lg sm:text-2xl text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed text-balance"
           >
             Join thousands of young creatives competing in Photography, Fashion Design, and Graphics Design. 
             Vote for your favorites and help shape the next generation of creative icons.
