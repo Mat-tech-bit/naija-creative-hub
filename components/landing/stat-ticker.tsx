@@ -15,7 +15,7 @@ const items = [
 
 export function StatTicker() {
   return (
-    <div className="bg-primary/5 py-4 border-y border-primary/10 overflow-hidden relative">
+    <div className="bg-primary/5 py-3 border-y border-primary/10 overflow-hidden relative">
       <div className="flex whitespace-nowrap">
         <motion.div
           animate={{ x: [0, -1000] }}
