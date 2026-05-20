@@ -74,15 +74,15 @@ export function Navbar() {
         <div className="container mx-auto px-4 md:px-6">
           <nav className="flex items-center justify-between">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2 group relative z-50">
+            <Link href="/" className="flex items-center gap-2 sm:gap-3 group relative z-50">
               <div className="relative">
-                <div className="w-10 h-10 flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
-                  <img src="/favicon.ico" alt="NaijaCreativeHub Logo" className="w-8 h-8 object-contain" />
+                <div className="flex items-center justify-center transform group-hover:scale-105 transition-transform duration-300">
+                  <img src="/favicon.ico" alt="NaijaCreativeHub Logo" className="w-12 h-12 sm:w-14 sm:h-14 object-contain" />
                 </div>
                 <div className="absolute inset-0 rounded-xl bg-primary/20 opacity-0 group-hover:opacity-100 blur-xl transition-opacity animate-pulse" />
               </div>
-              <span className="text-xl font-bold tracking-tight">
-                Naija<span className="gradient-text">CreativeHub</span>
+              <span className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+                Naija<span className="text-primary">Creative</span>Hub
               </span>
             </Link>
 
