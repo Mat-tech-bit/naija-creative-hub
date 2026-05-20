@@ -133,7 +133,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           {/* Sidebar Header */}
           <div className="flex h-16 items-center justify-between px-4 border-b border-border/50 bg-card/50 backdrop-blur shrink-0">
             <Link href="/admin" className="flex items-center gap-3">
-              <img src="/favicon.ico" alt="NaijaCreativeHub Logo" className="h-10 w-10 shrink-0 object-contain" />
+              <img src="/favicon.ico" alt="NaijaCreativeHub Logo" className="h-12 w-12 shrink-0 object-contain mix-blend-screen" />
               {sidebarOpen && (
                 <motion.span 
                   initial={{ opacity: 0, x: -10 }}

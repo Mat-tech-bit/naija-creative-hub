@@ -39,14 +39,8 @@ const contactInfo = [
   {
     icon: Mail,
     title: "Email Us",
-    details: ["support@creativeedge.ng", "partnerships@creativeedge.ng"],
+    details: ["thenaijacreativehub@gmail.com"],
     description: "We typically respond within 24 hours",
-  },
-  {
-    icon: Phone,
-    title: "Call Us",
-    details: ["+234 801 234 5678", "+234 802 345 6789"],
-    description: "Mon - Fri, 9am - 6pm WAT",
   },
   {
     icon: MapPin,
@@ -70,10 +64,9 @@ const inquiryTypes = [
 ]
 
 const socialLinks = [
-  { icon: Instagram, href: "https://instagram.com/creativeedge", label: "Instagram" },
-  { icon: Twitter, href: "https://twitter.com/creativeedge", label: "Twitter" },
-  { icon: Facebook, href: "https://facebook.com/creativeedge", label: "Facebook" },
-  { icon: Linkedin, href: "https://linkedin.com/company/creativeedge", label: "LinkedIn" },
+  { icon: Instagram, href: "https://www.instagram.com/naijacreativehub?igsh=MXhqNW5ueHhrMmRvNQ==", label: "Instagram" },
+  { icon: Twitter, href: "https://x.com/Creative1237911", label: "Twitter" },
+  { icon: Facebook, href: "https://www.facebook.com/share/1BD9Zhmww5/", label: "Facebook" },
 ]
 
 const faqs = [

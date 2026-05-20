@@ -37,8 +37,8 @@ export function Footer() {
           {/* Brand Column */}
           <div className="lg:col-span-1">
             <Link href="/" className="flex items-center gap-3 mb-6">
-              <img src="/favicon.ico" alt="NaijaCreativeHub Logo" className="w-14 h-14 object-contain" />
-              <span className="text-3xl font-bold text-foreground tracking-tight">
+              <img src="/favicon.ico" alt="NaijaCreativeHub Logo" className="w-16 h-16 object-contain mix-blend-screen" />
+              <span className="text-2xl font-bold text-foreground tracking-tight">
                 Naija<span className="text-primary">Creative</span>Hub
               </span>
             </Link>
