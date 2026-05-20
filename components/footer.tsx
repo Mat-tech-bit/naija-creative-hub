@@ -36,9 +36,9 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand Column */}
           <div className="lg:col-span-1">
-            <Link href="/" className="flex items-center gap-3 mb-6">
-              <img src="/favicon.ico" alt="NaijaCreativeHub Logo" className="w-16 h-16 object-contain mix-blend-screen" />
-              <span className="text-2xl font-bold text-foreground tracking-tight">
+            <Link href="/" className="flex items-center gap-1 mb-6">
+              <img src="/favicon.ico" alt="NaijaCreativeHub Logo" className="w-28 h-28 object-contain mix-blend-screen -ml-4" />
+              <span className="text-3xl font-bold text-foreground tracking-tight">
                 Naija<span className="text-primary">Creative</span>Hub
               </span>
             </Link>

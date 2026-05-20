@@ -77,11 +77,11 @@ export function Navbar() {
             <Link href="/" className="flex items-center gap-2 sm:gap-3 group relative z-50">
               <div className="relative">
                 <div className="flex items-center justify-center transform group-hover:scale-105 transition-transform duration-300">
-                  <img src="/favicon.ico" alt="NaijaCreativeHub Logo" className="w-16 h-16 sm:w-20 sm:h-20 object-contain mix-blend-screen" />
+                  <img src="/favicon.ico" alt="NaijaCreativeHub Logo" className="w-24 h-24 sm:w-28 sm:h-28 object-contain mix-blend-screen -ml-4" />
                 </div>
                 <div className="absolute inset-0 rounded-xl bg-primary/20 opacity-0 group-hover:opacity-100 blur-xl transition-opacity animate-pulse" />
               </div>
-              <span className="text-2xl font-bold tracking-tight text-foreground">
+              <span className="text-2xl font-bold tracking-tight text-foreground -ml-2">
                 Naija<span className="text-primary">Creative</span>Hub
               </span>
             </Link>

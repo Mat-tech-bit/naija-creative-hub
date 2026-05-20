@@ -265,9 +265,9 @@ export default function RegisterPage() {
         <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full bg-accent/10 blur-[100px]" />
 
         <div className="relative z-10 flex flex-col justify-center p-12 xl:p-16">
-          <Link href="/" className="flex items-center gap-3 mb-10">
-            <img src="/favicon.ico" alt="NaijaCreativeHub Logo" className="w-20 h-20 object-contain mix-blend-screen" />
-            <span className="text-3xl font-bold text-foreground tracking-tight">
+          <Link href="/" className="flex items-center gap-1 mb-10">
+            <img src="/favicon.ico" alt="NaijaCreativeHub Logo" className="w-32 h-32 object-contain mix-blend-screen -ml-6" />
+            <span className="text-4xl font-bold text-foreground tracking-tight">
               Naija<span className="text-primary">Creative</span>Hub
             </span>
           </Link>
@@ -304,9 +304,9 @@ export default function RegisterPage() {
       <div className="flex-1 flex flex-col">
         {/* Mobile Header */}
         <div className="lg:hidden p-4 border-b border-border">
-          <Link href="/" className="flex items-center gap-2">
-            <img src="/favicon.ico" alt="NaijaCreativeHub Logo" className="w-12 h-12 object-contain mix-blend-screen" />
-            <span className="text-xl font-bold text-foreground tracking-tight">
+          <Link href="/" className="flex items-center gap-1">
+            <img src="/favicon.ico" alt="NaijaCreativeHub Logo" className="w-20 h-20 object-contain mix-blend-screen -ml-2" />
+            <span className="text-2xl font-bold text-foreground tracking-tight">
               Naija<span className="text-primary">Creative</span>Hub
             </span>
           </Link>
