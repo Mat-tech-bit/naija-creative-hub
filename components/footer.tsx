@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Camera, Palette, Brush, Trophy, Instagram, Twitter, Youtube, Mail, MapPin, Phone } from "lucide-react"
+import { Camera, Palette, Brush, Trophy, Instagram, Twitter, Facebook, Mail, MapPin } from "lucide-react"
 
 const categories = [
   { name: "Photography", icon: Camera, href: "/leaderboard?category=photography" },
@@ -23,9 +23,9 @@ const legalLinks = [
 ]
 
 const socialLinks = [
-  { name: "Instagram", icon: Instagram, href: "#" },
-  { name: "Twitter", icon: Twitter, href: "#" },
-  { name: "YouTube", icon: Youtube, href: "#" },
+  { name: "Instagram", icon: Instagram, href: "https://www.instagram.com/naijacreativehub?igsh=MXhqNW5ueHhrMmRvNQ==" },
+  { name: "Twitter", icon: Twitter, href: "https://x.com/Creative1237911" },
+  { name: "Facebook", icon: Facebook, href: "https://www.facebook.com/share/1BD9Zhmww5/" },
 ]
 
 export function Footer() {
@@ -52,6 +52,8 @@ export function Footer() {
                 <a
                   key={social.name}
                   href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-colors"
                   aria-label={social.name}
                 >
@@ -116,11 +118,7 @@ export function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start gap-3 text-sm text-muted-foreground">
                 <Mail className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                <span>hello@naijacreativehub.com</span>
-              </li>
-              <li className="flex items-start gap-3 text-sm text-muted-foreground">
-                <Phone className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                <span>+234 800 000 0000</span>
+                <span>thenaijacreativehub@gmail.com</span>
               </li>
               <li className="flex items-start gap-3 text-sm text-muted-foreground">
                 <MapPin className="w-5 h-5 text-primary shrink-0 mt-0.5" />

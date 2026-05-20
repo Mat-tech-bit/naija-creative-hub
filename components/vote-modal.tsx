@@ -203,7 +203,16 @@ export function VoteModal({ isOpen, onClose, contestant }: VoteModalProps) {
                       <Minus className="w-5 h-5" />
                     </button>
                     <div className="text-center">
-                      <div className="text-4xl font-bold">{voteCount}</div>
+                      <input
+                        type="number"
+                        min="1"
+                        value={voteCount}
+                        onChange={(e) => {
+                          const val = parseInt(e.target.value);
+                          setVoteCount(isNaN(val) || val < 1 ? 1 : val);
+                        }}
+                        className="w-20 text-center text-4xl font-bold bg-transparent border-none focus:outline-none focus:ring-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                      />
                       <div className="text-xs text-muted-foreground">votes</div>
                     </div>
                     <button
@@ -216,8 +225,8 @@ export function VoteModal({ isOpen, onClose, contestant }: VoteModalProps) {
                 </div>
 
                 {/* Quick Add Buttons */}
-                <div className="flex gap-2 mb-6">
-                  {[5, 10, 20, 50].map((amount) => (
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {[5, 10, 20, 50, 500, 1000].map((amount) => (
                     <button
                       key={amount}
                       onClick={() => setVoteCount(amount)}

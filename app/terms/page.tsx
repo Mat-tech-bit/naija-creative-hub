@@ -148,8 +148,7 @@ export default function TermsPage() {
                 <h2 className="text-2xl font-bold mb-4 text-foreground">Welcome to NaijaCreativeHub</h2>
                 <div className="space-y-4 text-muted-foreground leading-relaxed">
                   <p>
-                    These Terms & Conditions constitute a legally binding agreement between you ("User", "Participant", or "Contestant") 
-                    and NaijaCreativeHub ("we", "us", or "our").
+                    These Terms & Conditions constitute a legally binding agreement between you and NaijaCreativeHub.
                   </p>
                   <p>
                     By accessing NaijaCreativeHub, browsing the website, or participating in any contest, you acknowledge that you 
