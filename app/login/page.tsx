@@ -61,8 +61,8 @@ export default function LoginPage() {
         
         <div className="relative z-10 flex flex-col justify-center p-12 xl:p-16">
           <Link href="/" className="flex items-center gap-1 mb-10">
-            <img src="/favicon.ico" alt="NaijaCreativeHub Logo" className="w-32 h-32 object-contain mix-blend-screen -ml-6" />
-            <span className="text-4xl font-bold text-foreground tracking-tight">
+            <img src="/favicon.ico" alt="NaijaCreativeHub Logo" className="w-56 h-56 object-contain mix-blend-screen -my-16 -ml-16 mr-[-2rem] scale-[1.2]" />
+            <span className="text-4xl font-bold text-foreground tracking-tight z-10">
               Naija<span className="text-primary">Creative</span>Hub
             </span>
           </Link>
@@ -98,8 +98,8 @@ export default function LoginPage() {
         {/* Mobile Header */}
         <div className="lg:hidden p-4 border-b border-border">
           <Link href="/" className="flex items-center gap-1">
-            <img src="/favicon.ico" alt="NaijaCreativeHub Logo" className="w-20 h-20 object-contain mix-blend-screen -ml-2" />
-            <span className="text-2xl font-bold text-foreground tracking-tight">
+            <img src="/favicon.ico" alt="NaijaCreativeHub Logo" className="w-36 h-36 object-contain mix-blend-screen -my-10 -ml-8 scale-[1.2]" />
+            <span className="text-2xl font-bold text-foreground tracking-tight z-10">
               Naija<span className="text-primary">Creative</span>Hub
             </span>
           </Link>
