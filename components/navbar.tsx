@@ -76,7 +76,7 @@ export function Navbar() {
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 group relative z-50">
               <div className="relative">
-                <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300 overflow-hidden">
+                <div className="w-10 h-10 flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
                   <img src="/favicon.ico" alt="NaijaCreativeHub Logo" className="w-8 h-8 object-contain" />
                 </div>
                 <div className="absolute inset-0 rounded-xl bg-primary/20 opacity-0 group-hover:opacity-100 blur-xl transition-opacity animate-pulse" />

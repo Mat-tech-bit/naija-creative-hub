@@ -61,7 +61,7 @@ export default function LoginPage() {
         
         <div className="relative z-10 flex flex-col justify-center p-12 xl:p-16">
           <Link href="/" className="flex items-center gap-2 mb-12">
-            <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center overflow-hidden shadow-lg">
+            <div className="w-10 h-10 flex items-center justify-center">
               <img src="/favicon.ico" alt="NaijaCreativeHub Logo" className="w-8 h-8 object-contain" />
             </div>
             <span className="text-xl font-bold">
@@ -100,7 +100,7 @@ export default function LoginPage() {
         {/* Mobile Header */}
         <div className="lg:hidden p-4 border-b border-border">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center overflow-hidden">
+            <div className="w-8 h-8 flex items-center justify-center">
               <img src="/favicon.ico" alt="NaijaCreativeHub Logo" className="w-6 h-6 object-contain" />
             </div>
             <span className="font-bold">
