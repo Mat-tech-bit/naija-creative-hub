@@ -19,6 +19,7 @@ import {
 } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { LeaderboardInfo } from "@/components/leaderboard-info"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
@@ -347,6 +348,8 @@ function LeaderboardContent() {
               </div>
             </>
           )}
+          
+          <LeaderboardInfo />
         </div>
       </main>
 

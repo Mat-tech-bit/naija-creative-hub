@@ -35,6 +35,7 @@ import {
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { VoteModal } from "@/components/vote-modal"
+import { ContestantInfoSections } from "@/components/contestant-info-sections"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
@@ -669,6 +670,11 @@ function ContestantProfileContent() {
             </div>
           </div>
         </section>
+
+        {/* Extra Info Sections */}
+        <div className="container mx-auto px-4">
+          <ContestantInfoSections />
+        </div>
       </main>
 
       {/* Floating Vote Button (Mobile) */}

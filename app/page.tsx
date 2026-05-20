@@ -10,14 +10,19 @@ import { WinnersShowcaseSection } from "@/components/landing/winners-showcase-se
 import { TestimonialsSection } from "@/components/landing/testimonials-section"
 import { FAQSection } from "@/components/landing/faq-section"
 import { SponsorsSection } from "@/components/landing/sponsors-section"
+import { VoterGuideSection } from "@/components/landing/voter-guide-section"
+import { CTANewsletter } from "@/components/landing/cta-newsletter"
+import { StatTicker } from "@/components/landing/stat-ticker"
 
 export default function HomePage() {
   return (
     <main className="min-h-screen">
       <Navbar />
       <HeroSection />
+      <StatTicker />
       <CurrentEditionSection />
       <FeaturedContestantsSection />
+      <VoterGuideSection />
       <CategoriesSection />
       <HowItWorksSection />
       <PrizePoolSection />
@@ -25,6 +30,7 @@ export default function HomePage() {
       <TestimonialsSection />
       <FAQSection />
       <SponsorsSection />
+      <CTANewsletter />
       <Footer />
     </main>
   )
