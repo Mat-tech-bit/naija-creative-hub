@@ -36,10 +36,16 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand Column */}
           <div className="lg:col-span-1">
-            <Link href="/" className="flex items-center gap-1 mb-6">
-              <img src="/favicon.ico" alt="NaijaCreativeHub Logo" className="w-48 h-48 object-contain mix-blend-screen -my-12 -ml-12 mr-[-1rem] scale-[1.2]" />
-              <span className="text-3xl font-bold text-foreground tracking-tight z-10">
-                Naija<span className="text-primary">Creative</span>Hub
+            <Link href="/" className="flex items-center gap-2 mb-8 group">
+              <div className="relative flex items-center justify-center w-10 h-10 bg-primary rounded-xl shadow-lg shadow-primary/20 overflow-hidden group-hover:scale-105 transition-transform duration-300">
+                <img 
+                  src="/favicon.ico" 
+                  alt="NaijaCreativeHub" 
+                  className="w-full h-full object-cover scale-150" 
+                />
+              </div>
+              <span className="text-2xl font-black tracking-tighter text-foreground">
+                Naija<span className="text-primary tracking-tight">Creative</span>Hub
               </span>
             </Link>
             <p className="text-muted-foreground text-sm mb-6 leading-relaxed">

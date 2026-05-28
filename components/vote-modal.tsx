@@ -202,18 +202,27 @@ export function VoteModal({ isOpen, onClose, contestant }: VoteModalProps) {
                     >
                       <Minus className="w-5 h-5" />
                     </button>
-                    <div className="text-center">
+                    <div className="text-center flex-1 min-w-0">
                       <input
-                        type="number"
-                        min="1"
-                        value={voteCount}
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                        value={voteCount === 0 ? "" : voteCount}
                         onChange={(e) => {
-                          const val = parseInt(e.target.value);
-                          setVoteCount(isNaN(val) || val < 1 ? 1 : val);
+                          const valStr = e.target.value.replace(/[^0-9]/g, "");
+                          if (valStr === "") {
+                            setVoteCount(0);
+                            return;
+                          }
+                          const val = parseInt(valStr);
+                          setVoteCount(val);
                         }}
-                        className="w-20 text-center text-4xl font-bold bg-transparent border-none focus:outline-none focus:ring-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                        onBlur={() => {
+                          if (voteCount < 1) setVoteCount(1);
+                        }}
+                        className="w-full text-center text-4xl sm:text-5xl font-black bg-transparent border-none focus:outline-none focus:ring-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none p-0"
                       />
-                      <div className="text-xs text-muted-foreground">votes</div>
+                      <div className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mt-1">votes</div>
                     </div>
                     <button
                       onClick={incrementVotes}

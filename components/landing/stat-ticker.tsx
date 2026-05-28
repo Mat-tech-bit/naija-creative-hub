@@ -15,7 +15,7 @@ const items = [
 
 export function StatTicker() {
   return (
-    <div className="bg-primary/5 py-3 border-y border-primary/10 overflow-hidden relative">
+    <div className="bg-primary/5 py-5 border-y border-white/5 overflow-hidden relative">
       <div className="flex whitespace-nowrap">
         <motion.div
           animate={{ x: [0, -1000] }}
@@ -23,16 +23,16 @@ export function StatTicker() {
             x: {
               repeat: Infinity,
               repeatType: "loop",
-              duration: 20,
+              duration: 30,
               ease: "linear",
             },
           }}
-          className="flex gap-16 items-center px-8"
+          className="flex gap-24 items-center px-8"
         >
           {items.concat(items).map((item, index) => (
-            <div key={index} className="flex items-center gap-3">
-              <div className="w-2 h-2 rounded-full bg-primary" />
-              <span className="text-xs font-black uppercase tracking-[0.2em] text-primary/80">
+            <div key={index} className="flex items-center gap-4">
+              <div className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_var(--primary)]" />
+              <span className="text-[10px] sm:text-xs font-black uppercase tracking-[0.3em] text-primary/70">
                 {item}
               </span>
             </div>

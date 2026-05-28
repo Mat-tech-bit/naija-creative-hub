@@ -35,7 +35,7 @@ export function HeroSection() {
   }, [])
 
   return (
-    <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden pt-24 pb-12">
+    <section className="relative min-h-[85vh] sm:min-h-[70vh] flex items-center justify-center overflow-hidden pt-32 pb-20 sm:pt-24 sm:pb-12">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-muted/20" />
       
@@ -70,57 +70,53 @@ export function HeroSection() {
             <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
           </motion.div>
 
-          {/* Headline */}
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold leading-[1.1] mb-6 text-balance"
+            className="text-5xl sm:text-7xl lg:text-8xl font-black leading-[0.95] mb-8 text-balance tracking-tighter"
           >
             Naija <span className="gradient-text">Creates.</span><br />
             The World <span className="gradient-text">Celebrates.</span>
           </motion.h1>
 
-          {/* Subheadline */}
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg sm:text-2xl text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed text-balance"
+            className="text-base sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed text-balance font-medium opacity-80"
           >
             Join thousands of young creatives competing in Photography, Fashion Design, and Graphics Design. 
             Vote for your favorites and help shape the next generation of creative icons.
           </motion.p>
 
-          {/* CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6"
           >
-            <Link href="/register">
-              <Button size="lg" className="gradient-primary border-0 text-white hover:opacity-90 h-14 px-8 text-base">
+            <Link href="/register" className="w-full sm:w-auto">
+              <Button size="lg" className="w-full sm:w-auto gradient-primary border-0 text-white hover:scale-105 active:scale-95 transition-all h-14 px-10 text-base font-bold shadow-xl shadow-primary/20">
                 Register Now
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
-            <Link href="/leaderboard">
-              <Button size="lg" variant="outline" className="h-14 px-8 text-base group">
+            <Link href="/leaderboard" className="w-full sm:w-auto">
+              <Button size="lg" variant="outline" className="w-full sm:w-auto h-14 px-10 text-base font-bold group rounded-xl border-white/10 hover:bg-white/5 active:scale-95 transition-all">
                 Vote Contestants
-                <span className="ml-2 w-8 h-8 rounded-full bg-muted flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                  <Play className="w-4 h-4" />
+                <span className="ml-3 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-all">
+                  <Play className="w-3.5 h-3.5 fill-current" />
                 </span>
               </Button>
             </Link>
           </motion.div>
 
-          {/* Stats */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex flex-wrap items-center justify-center gap-8 sm:gap-12 mt-16"
+            className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-12 mt-24 max-w-4xl mx-auto"
           >
             {[
               { value: stats.votes, label: "Votes Cast" },
@@ -128,9 +124,9 @@ export function HeroSection() {
               { value: stats.editions, label: "Editions" },
               { value: stats.prize, label: "Prize Pool" },
             ].map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="text-2xl sm:text-3xl font-bold gradient-text">{stat.value}</div>
-                <div className="text-sm text-muted-foreground mt-1">{stat.label}</div>
+              <div key={index} className="text-center p-4 rounded-2xl glass-border bg-white/2 hover:bg-white/5 transition-colors">
+                <div className="text-2xl sm:text-4xl font-black gradient-text tracking-tighter">{stat.value}</div>
+                <div className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-muted-foreground mt-2 opacity-60">{stat.label}</div>
               </div>
             ))}
           </motion.div>

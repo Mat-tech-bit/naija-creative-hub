@@ -427,17 +427,22 @@ function ContestantProfileContent() {
             <div className="glass rounded-3xl p-6 sm:p-8 relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-primary/10 transition-colors" />
               
-              <div className="text-center mb-8 relative z-10">
-                <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3 opacity-70">Current Standing</p>
-                <div className="text-6xl sm:text-7xl font-black gradient-text tracking-tighter mb-2 flex items-baseline justify-center gap-2">
-                  <AnimatedVoteCounter votes={contestant.votes ?? 0} />
-                  <span className="text-xl sm:text-2xl font-bold text-muted-foreground uppercase tracking-normal">vote(s)</span>
+                <div className="text-center mb-8 relative z-10">
+                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-4 opacity-60">Current Standing</p>
+                  <div className="flex flex-col items-center justify-center mb-4">
+                    <div className={cn(
+                      "font-black gradient-text tracking-tighter leading-none mb-1 tabular-nums",
+                      (contestant.votes ?? 0) > 9999 ? "text-5xl sm:text-7xl" : "text-6xl sm:text-8xl"
+                    )}>
+                      <AnimatedVoteCounter votes={contestant.votes ?? 0} />
+                    </div>
+                    <span className="text-xs sm:text-sm font-bold text-muted-foreground uppercase tracking-widest opacity-80">Total Votes Received</span>
+                  </div>
+                  <div className="flex items-center justify-center gap-2 text-xs font-bold text-foreground bg-white/5 border border-white/5 w-fit mx-auto px-4 py-2 rounded-xl backdrop-blur-sm">
+                    <Trophy className="w-3.5 h-3.5 text-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.3)]" />
+                    {contestant.rank ? `Rank #${contestant.rank} of ${contestant.totalContestants}` : "Unranked"}
+                  </div>
                 </div>
-                <div className="flex items-center justify-center gap-2 text-sm font-bold text-foreground bg-muted/50 w-fit mx-auto px-4 py-1.5 rounded-full">
-                  <Trophy className="w-4 h-4 text-amber-500" />
-                  {contestant.rank ? `Rank #${contestant.rank} of ${contestant.totalContestants}` : "Unranked"}
-                </div>
-              </div>
 
               {/* Vote Button */}
               <Button

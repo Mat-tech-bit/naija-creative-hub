@@ -32,39 +32,40 @@ const prizes = [
 
 export function PrizePoolSection() {
   return (
-    <section className="py-16 bg-muted/30 relative overflow-hidden">
+    <section className="py-24 sm:py-32 bg-muted/20 relative overflow-hidden">
       {/* Background Effects */}
-      <div className="absolute top-1/2 left-1/4 w-96 h-96 rounded-full bg-secondary/10 blur-[120px]" />
-      <div className="absolute bottom-0 right-1/4 w-80 h-80 rounded-full bg-primary/10 blur-[100px]" />
+      <div className="absolute top-1/2 left-1/4 w-96 h-96 rounded-full bg-secondary/10 blur-[120px] animate-pulse" />
+      <div className="absolute bottom-0 right-1/4 w-80 h-80 rounded-full bg-primary/10 blur-[100px] animate-float" />
 
       <div className="container mx-auto px-4 relative">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <motion.span
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+        <div className="text-center max-w-3xl mx-auto mb-20">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="text-secondary font-medium mb-2 block"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary/10 text-secondary text-xs font-black uppercase tracking-widest mb-6 border border-secondary/20"
           >
+            <Star className="w-3.5 h-3.5 fill-current" />
             Win Big
-          </motion.span>
+          </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-3xl sm:text-4xl font-bold mb-4 text-balance"
+            className="text-4xl sm:text-5xl md:text-6xl font-black mb-6 text-balance tracking-tighter leading-tight"
           >
-            Prize Pool Worth ₦500,000+
+            Prize Pool Worth <span className="gradient-text">₦2M+</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-muted-foreground"
+            className="text-muted-foreground text-base sm:text-lg max-w-xl mx-auto leading-relaxed font-medium opacity-80"
           >
-            Top performers in each category take home amazing prizes and recognition.
+            Top performers in each category take home amazing cash prizes, professional recognition, and career-launching opportunities.
           </motion.p>
         </div>
 

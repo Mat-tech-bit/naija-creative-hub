@@ -74,15 +74,17 @@ export function Navbar() {
         <div className="container mx-auto px-4 md:px-6">
           <nav className="flex items-center justify-between">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2 sm:gap-3 group relative z-50">
-              <div className="relative">
-                <div className="flex items-center justify-center transform group-hover:scale-105 transition-transform duration-300">
-                  <img src="/favicon.ico" alt="NaijaCreativeHub Logo" className="w-40 h-40 sm:w-48 sm:h-48 object-contain mix-blend-screen -my-12 -ml-12 mr-[-1rem] scale-[1.2]" />
-                </div>
-                <div className="absolute inset-0 rounded-xl bg-primary/20 opacity-0 group-hover:opacity-100 blur-xl transition-opacity animate-pulse" />
+            <Link href="/" className="flex items-center gap-2 group relative z-50">
+              <div className="relative flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-primary rounded-xl shadow-lg shadow-primary/20 overflow-hidden group-hover:scale-105 transition-transform duration-300">
+                <img 
+                  src="/favicon.ico" 
+                  alt="NaijaCreativeHub" 
+                  className="w-full h-full object-cover scale-150" 
+                />
+                <div className="absolute inset-0 bg-primary/20 mix-blend-overlay" />
               </div>
-              <span className="text-2xl font-bold tracking-tight text-foreground z-10">
-                Naija<span className="text-primary">Creative</span>Hub
+              <span className="text-xl sm:text-2xl font-black tracking-tighter text-foreground">
+                Naija<span className="text-primary tracking-tight">Creative</span>Hub
               </span>
             </Link>
 
@@ -246,14 +248,14 @@ export function Navbar() {
                         href={item.href}
                         onClick={() => setIsMobileMenuOpen(false)}
                         className={cn(
-                          "flex items-center justify-between px-4 py-4 rounded-2xl text-xl font-bold transition-all duration-300",
+                          "flex items-center justify-between px-4 py-3 rounded-2xl text-2xl font-black tracking-tight transition-all duration-300",
                           pathname === item.href
-                            ? "text-primary bg-primary/10"
+                            ? "text-primary bg-primary/5"
                             : "text-foreground hover:bg-white/5"
                         )}
                       >
                         {item.name}
-                        {pathname === item.href && <Trophy className="w-5 h-5 text-primary" />}
+                        {pathname === item.href && <div className="w-2 h-2 rounded-full bg-primary shadow-[0_0_10px_var(--primary)]" />}
                       </Link>
                     </motion.div>
                   ))}

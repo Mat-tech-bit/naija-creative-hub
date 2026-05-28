@@ -32,35 +32,35 @@ const steps = [
 
 export function HowItWorksSection() {
   return (
-    <section className="py-16 relative">
+    <section className="py-24 sm:py-32 relative overflow-hidden">
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <motion.span
+        <div className="text-center max-w-3xl mx-auto mb-20">
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-primary font-medium mb-2 block"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest mb-6 border border-primary/20"
           >
-            Simple Process
-          </motion.span>
+            The Roadmap
+          </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-3xl sm:text-4xl font-bold mb-4 text-balance"
+            className="text-4xl sm:text-5xl md:text-6xl font-black mb-6 text-balance tracking-tighter leading-tight"
           >
-            How It Works
+            How It <span className="gradient-text">Works</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-muted-foreground"
+            className="text-muted-foreground text-base sm:text-lg max-w-xl mx-auto leading-relaxed font-medium opacity-80"
           >
-            Four simple steps to showcase your talent and compete for glory.
+            A simple four-step process designed to empower your creative journey and connect you with global recognition.
           </motion.p>
         </div>
 

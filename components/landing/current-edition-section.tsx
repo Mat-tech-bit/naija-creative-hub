@@ -91,57 +91,61 @@ export function CurrentEditionSection() {
   }
 
   return (
-    <section className="py-16 relative overflow-hidden">
+    <section className="py-24 sm:py-32 relative overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-muted/30" />
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
 
       <div className="container mx-auto px-4 relative">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto text-center">
           {/* Edition Badge */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="mb-12"
           >
-            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full glass mb-6">
-              <Trophy className="w-5 h-5 text-secondary" />
-              <span className="font-semibold">Edition 5</span>
-              <span className="px-2 py-0.5 rounded-full bg-green-500/20 text-green-400 text-xs font-medium">
+            <div className="inline-flex items-center gap-3 px-6 py-2.5 rounded-2xl glass mb-8 border-white/5">
+              <Trophy className="w-5 h-5 text-secondary glow-secondary shadow-[0_0_15px_var(--secondary)]" />
+              <span className="font-bold tracking-tight">EDITION 5</span>
+              <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-green-500/20 text-green-400 text-[10px] font-black uppercase tracking-tighter">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
                 LIVE
-              </span>
+              </div>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-balance">
-              The Ultimate Creative Showdown
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-black mb-6 text-balance tracking-tighter leading-tight">
+              The Ultimate <span className="gradient-text">Creative</span> Showdown
             </h2>
-            <p className="text-muted-foreground max-w-xl mx-auto">
-              Edition 5 is in full swing! Cast your votes and help crown the next creative champions.
+            <p className="text-muted-foreground text-base sm:text-lg max-w-xl mx-auto leading-relaxed font-medium opacity-80">
+              Edition 5 is in full swing! Cast your votes and help crown the next creative champions who will define the future of Nigerian excellence.
             </p>
           </motion.div>
 
           {/* Countdown Timer */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="mb-12"
+            className="mb-20 glass rounded-3xl p-8 sm:p-12 border-white/5 relative group overflow-hidden"
           >
-            <div className="flex items-center justify-center gap-2 text-muted-foreground mb-6">
-              <Clock className="w-4 h-4" />
-              <span className="text-sm">Voting ends in</span>
-            </div>
-            <div className="flex items-center justify-center gap-4 sm:gap-6">
-              <CountdownUnit value={timeLeft.days} label="Days" />
-              <span className="text-2xl font-bold text-muted-foreground mt-[-20px]">:</span>
-              <CountdownUnit value={timeLeft.hours} label="Hours" />
-              <span className="text-2xl font-bold text-muted-foreground mt-[-20px]">:</span>
-              <CountdownUnit value={timeLeft.minutes} label="Minutes" />
-              <span className="text-2xl font-bold text-muted-foreground mt-[-20px] hidden sm:block">:</span>
-              <div className="hidden sm:block">
-                <CountdownUnit value={timeLeft.seconds} label="Seconds" />
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="relative z-10">
+              <div className="flex items-center justify-center gap-2 text-muted-foreground mb-10 font-bold uppercase tracking-[0.2em] text-[10px]">
+                <Clock className="w-4 h-4 text-primary" />
+                <span>Voting ends in</span>
+              </div>
+              <div className="flex items-center justify-center gap-4 sm:gap-10">
+                <CountdownUnit value={timeLeft.days} label="Days" />
+                <span className="text-4xl font-black text-white/20 mt-[-30px]">:</span>
+                <CountdownUnit value={timeLeft.hours} label="Hours" />
+                <span className="text-4xl font-black text-white/20 mt-[-30px]">:</span>
+                <CountdownUnit value={timeLeft.minutes} label="Mins" />
+                <span className="text-4xl font-black text-white/20 mt-[-30px] hidden sm:block">:</span>
+                <div className="hidden sm:block">
+                  <CountdownUnit value={timeLeft.seconds} label="Secs" />
+                </div>
               </div>
             </div>
           </motion.div>
